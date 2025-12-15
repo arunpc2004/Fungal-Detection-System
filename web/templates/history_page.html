@@ -1,0 +1,733 @@
+{% extends 'dashboard_base.html' %}
+{% block content %}
+<!-- Dashboard Sidebar -->
+<div class="dashboard-container">
+    <aside class="dashboard-sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">🍏</div>
+            <span class="sidebar-title">FruitGuard</span>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="/dashboard" class="nav-item">
+                <span class="nav-icon">📊</span>
+                <span class="nav-text">Dashboard</span>
+            </a>
+            <a href="/analyze" class="nav-item">
+                <span class="nav-icon">🔍</span>
+                <span class="nav-text">Analyze</span>
+            </a>
+            <a href="/live-detection" class="nav-item">
+                <span class="nav-icon">📹</span>
+                <span class="nav-text">Live Detection</span>
+            </a>
+            <a href="/history" class="nav-item active">
+                <span class="nav-icon">📋</span>
+                <span class="nav-text">History</span>
+            </a>
+            <a href="/batch" class="nav-item">
+                <span class="nav-icon">📦</span>
+                <span class="nav-text">Batch Upload</span>
+            </a>
+            <a href="/about" class="nav-item">
+                <span class="nav-icon">ℹ️</span>
+                <span class="nav-text">About</span>
+            </a>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <div class="user-avatar">👤</div>
+                <div class="user-info">
+                    <div class="user-name">AI User</div>
+                    <div class="user-role">Analyst</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+        <!-- Combined Header Section -->
+        <section class="dashboard-header-hero">
+            <div class="header-nav-section">
+                <div class="header-brand">
+                    <div class="brand-logo">🍏</div>
+                    <span class="brand-name">FreshGuard</span>
+                </div>
+                <nav class="header-nav">
+                    <a href="/dashboard">Home</a>
+                    <a href="/analyze">Analyze</a>
+                    <a href="/live-detection">Live Detection</a>
+                    <a href="/history">History</a>
+                    <a href="/about">About</a>
+                    <span class="theme-toggle" id="themeToggle">🌙</span>
+                </nav>
+            </div>
+            <div class="hero-content">
+                <h1>HEALTHY FRESH</h1>
+                <p>AI-powered fruit & vegetable quality inspection</p>
+            </div>
+        </section>
+        
+        <div class="history-container">
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <div class="filter-header">
+                    <span class="filter-icon">🔍</span>
+                    <h3>Filter & Search</h3>
+                </div>
+                <div class="filter-controls">
+                    <div class="filter-group search-group">
+                        <label>Search</label>
+                        <input type="text" class="search-input" id="searchInput" placeholder="Search by fruit name or condition...">
+                    </div>
+                    <div class="filter-group">
+                        <label>Fruit Type</label>
+                        <select class="filter-select" id="fruitFilter">
+                            <option value="">All Fruits</option>
+                            <option value="apple">Apple</option>
+                            <option value="tomato">Tomato</option>
+                            <option value="potato">Potato</option>
+                            <option value="grape">Grape</option>
+                            <option value="corn">Corn</option>
+                            <option value="banana">Banana</option>
+                            <option value="orange">Orange</option>
+                            <option value="strawberry">Strawberry</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Health Status</label>
+                        <select class="filter-select" id="statusFilter">
+                            <option value="">All Status</option>
+                            <option value="healthy">Healthy</option>
+                            <option value="diseased">Diseased</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Confidence</label>
+                        <select class="filter-select" id="confidenceFilter">
+                            <option value="">All Confidence</option>
+                            <option value="high">High (>90%)</option>
+                            <option value="medium">Medium (70-90%)</option>
+                            <option value="low">Low (<70%)</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Date Range</label>
+                        <select class="filter-select" id="dateFilter">
+                            <option value="">All Time</option>
+                            <option value="today">Today</option>
+                            <option value="week">This Week</option>
+                            <option value="month">This Month</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <button class="clear-filters-btn" onclick="clearFilters()">Clear All</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Row -->
+            <div class="stats-row">
+                <div class="stat-card total">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="historyTotal">0</div>
+                        <div class="stat-label">Total Analyses</div>
+                    </div>
+                </div>
+                <div class="stat-card healthy">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="historyHealthy">0</div>
+                        <div class="stat-label">Healthy Fruits</div>
+                    </div>
+                </div>
+                <div class="stat-card diseased">
+                    <div class="stat-icon">⚠️</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="historyDiseased">0</div>
+                        <div class="stat-label">Diseased Fruits</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- History Section -->
+            <div class="history-section">
+                <div class="history-header">
+                    <div class="history-title">
+                        <span class="history-icon">📋</span>
+                        <h3>Analysis History</h3>
+                    </div>
+                    <div class="history-actions">
+                        <button class="export-btn" onclick="exportData()">
+                            <span>📥</span>
+                            Export Data
+                        </button>
+                        <button class="clear-all-btn" onclick="clearAllHistory()">
+                            <span>🗑️</span>
+                            Clear All
+                        </button>
+                    </div>
+                </div>
+
+                <div class="history-list" id="historyList">
+                    <!-- Empty State -->
+                    <div class="empty-state">
+                        <div class="empty-icon">📊</div>
+                        <h4>No analysis history yet</h4>
+                        <p>Start analyzing fruits and vegetables to see your history here</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+let allHistoryData = [];
+
+function clearFilters() {
+    document.getElementById('searchInput').value = '';
+    document.getElementById('fruitFilter').value = '';
+    document.getElementById('statusFilter').value = '';
+    document.getElementById('confidenceFilter').value = '';
+    document.getElementById('dateFilter').value = '';
+    applyFilters();
+}
+
+function applyFilters() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const fruitFilter = document.getElementById('fruitFilter').value.toLowerCase();
+    const statusFilter = document.getElementById('statusFilter').value.toLowerCase();
+    const confidenceFilter = document.getElementById('confidenceFilter').value;
+    const dateFilter = document.getElementById('dateFilter').value;
+    
+    let filteredData = allHistoryData.filter(item => {
+        // Search filter
+        const matchesSearch = !searchTerm || 
+            item.fruit.toLowerCase().includes(searchTerm) ||
+            item.condition.toLowerCase().includes(searchTerm);
+        
+        // Fruit filter
+        const matchesFruit = !fruitFilter || item.fruit.toLowerCase() === fruitFilter;
+        
+        // Status filter
+        const isHealthy = item.condition.toLowerCase().includes('healthy');
+        const matchesStatus = !statusFilter || 
+            (statusFilter === 'healthy' && isHealthy) ||
+            (statusFilter === 'diseased' && !isHealthy);
+        
+        // Confidence filter
+        const confidence = parseFloat(item.confidence.replace('%', ''));
+        const matchesConfidence = !confidenceFilter ||
+            (confidenceFilter === 'high' && confidence > 90) ||
+            (confidenceFilter === 'medium' && confidence >= 70 && confidence <= 90) ||
+            (confidenceFilter === 'low' && confidence < 70);
+        
+        // Date filter
+        const itemDate = new Date(item.date);
+        const now = new Date();
+        const matchesDate = !dateFilter ||
+            (dateFilter === 'today' && isToday(itemDate)) ||
+            (dateFilter === 'week' && isThisWeek(itemDate)) ||
+            (dateFilter === 'month' && isThisMonth(itemDate));
+        
+        return matchesSearch && matchesFruit && matchesStatus && matchesConfidence && matchesDate;
+    });
+    
+    displayFilteredHistory(filteredData);
+    updateFilteredStats(filteredData);
+}
+
+function isToday(date) {
+    const today = new Date();
+    return date.toDateString() === today.toDateString();
+}
+
+function isThisWeek(date) {
+    const now = new Date();
+    const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    return date >= weekAgo && date <= now;
+}
+
+function isThisMonth(date) {
+    const now = new Date();
+    return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
+}
+
+function displayFilteredHistory(data) {
+    const historyList = document.getElementById('historyList');
+    
+    if (data.length === 0) {
+        historyList.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon">🔍</div>
+                <h4>No results found</h4>
+                <p>Try adjusting your filters or search terms</p>
+            </div>
+        `;
+        return;
+    }
+    
+    historyList.innerHTML = '';
+    data.forEach((item, index) => {
+        const isHealthy = item.condition.toLowerCase().includes('healthy');
+        const statusClass = isHealthy ? 'healthy' : 'diseased';
+        const statusText = isHealthy ? 'Healthy' : 'Diseased';
+        
+        const historyItem = document.createElement('div');
+        historyItem.className = 'history-item';
+        historyItem.innerHTML = `
+            <div class="item-image">
+                <img src="/static/uploads/${item.filename}" alt="${item.fruit}" onerror="this.src='https://via.placeholder.com/60x60/8BC34A/ffffff?text=${item.fruit.charAt(0).toUpperCase()}'">
+            </div>
+            <div class="item-content">
+                <h4>${item.fruit.charAt(0).toUpperCase() + item.fruit.slice(1)} - ${item.condition}</h4>
+                <p class="item-details">Detected: ${item.fruit} | Condition: ${item.condition}</p>
+                <p class="item-confidence">Confidence: ${item.confidence}</p>
+                <p class="item-date">${formatDate(item.date)}</p>
+            </div>
+            <div class="item-status">
+                <span class="status-badge ${statusClass}">${statusText}</span>
+            </div>
+            <div class="item-actions">
+                <button class="action-btn view" title="View Details" onclick="viewDetails(${index})">👁️</button>
+                <button class="action-btn delete" title="Delete" onclick="deleteHistoryItem(this, ${item.id})">🗑️</button>
+            </div>
+        `;
+        historyList.appendChild(historyItem);
+    });
+}
+
+function updateFilteredStats(data) {
+    const total = data.length;
+    const healthy = data.filter(item => item.condition.toLowerCase().includes('healthy')).length;
+    const diseased = total - healthy;
+    
+    document.getElementById('historyTotal').textContent = total;
+    document.getElementById('historyHealthy').textContent = healthy;
+    document.getElementById('historyDiseased').textContent = diseased;
+}
+
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+}
+
+function viewDetails(index) {
+    const item = allHistoryData[index];
+    alert(`Fruit: ${item.fruit}\nCondition: ${item.condition}\nConfidence: ${item.confidence}\nDate: ${formatDate(item.date)}`);
+}
+
+function exportData() {
+    if (allHistoryData.length === 0) {
+        alert('No data to export');
+        return;
+    }
+    
+    const exportFormat = prompt('Choose export format:\n1. CSV\n2. JSON\n\nEnter 1 or 2:', '1');
+    
+    if (exportFormat === '1') {
+        exportViaServer('csv');
+    } else if (exportFormat === '2') {
+        exportViaServer('json');
+    }
+}
+
+function exportViaServer(format) {
+    const link = document.createElement('a');
+    link.href = `/api/export/${format}`;
+    link.download = `fruit_analysis_history.${format}`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    showExportSuccess(`fruit_analysis_history.${format}`);
+}
+
+function exportToCSV() {
+    const headers = ['Date', 'Fruit', 'Condition', 'Confidence', 'Health Status'];
+    const csvContent = [headers.join(',')];
+    
+    allHistoryData.forEach(item => {
+        const isHealthy = item.condition.toLowerCase().includes('healthy');
+        const row = [
+            formatDate(item.date),
+            item.fruit,
+            item.condition,
+            item.confidence,
+            isHealthy ? 'Healthy' : 'Diseased'
+        ];
+        csvContent.push(row.join(','));
+    });
+    
+    downloadFile(csvContent.join('\n'), 'fruit_analysis_history.csv', 'text/csv');
+}
+
+function exportToJSON() {
+    const exportData = allHistoryData.map(item => ({
+        date: formatDate(item.date),
+        fruit: item.fruit,
+        condition: item.condition,
+        confidence: item.confidence,
+        health_status: item.condition.toLowerCase().includes('healthy') ? 'Healthy' : 'Diseased',
+        filename: item.filename
+    }));
+    
+    const jsonContent = JSON.stringify(exportData, null, 2);
+    downloadFile(jsonContent, 'fruit_analysis_history.json', 'application/json');
+}
+
+function downloadFile(content, filename, contentType) {
+    const blob = new Blob([content], { type: contentType });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+    
+    // Show success message
+    showExportSuccess(filename);
+}
+
+function showExportSuccess(filename) {
+    const message = document.createElement('div');
+    message.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #4CAF50;
+        color: white;
+        padding: 15px 20px;
+        border-radius: 8px;
+        z-index: 1000;
+        font-weight: 600;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    `;
+    message.textContent = `✅ Exported: ${filename}`;
+    document.body.appendChild(message);
+    
+    setTimeout(() => {
+        document.body.removeChild(message);
+    }, 3000);
+}
+
+function clearAllHistory() {
+    if (confirm('Are you sure you want to clear all analysis history? This action cannot be undone.')) {
+        // Clear history logic here
+        document.getElementById('historyList').innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon">📊</div>
+                <h4>No analysis history yet</h4>
+                <p>Start analyzing fruits and vegetables to see your history here</p>
+            </div>
+        `;
+    }
+}
+
+function loadHistory() {
+    fetch('/api/history')
+        .then(response => response.json())
+        .then(data => {
+            allHistoryData = data.length > 0 ? data : generateSampleData();
+            applyFilters();
+        })
+        .catch(error => {
+            console.error('Error loading history:', error);
+            allHistoryData = generateSampleData();
+            applyFilters();
+        });
+}
+
+function generateSampleData() {
+    return [
+        { id: 1, fruit: 'apple', condition: 'healthy', confidence: '95.2%', date: new Date().toISOString(), filename: 'sample1.jpg' },
+        { id: 2, fruit: 'tomato', condition: 'early_blight', confidence: '87.5%', date: new Date(Date.now() - 86400000).toISOString(), filename: 'sample2.jpg' },
+        { id: 3, fruit: 'potato', condition: 'healthy', confidence: '92.1%', date: new Date(Date.now() - 172800000).toISOString(), filename: 'sample3.jpg' },
+        { id: 4, fruit: 'grape', condition: 'black_rot', confidence: '89.3%', date: new Date(Date.now() - 259200000).toISOString(), filename: 'sample4.jpg' },
+        { id: 5, fruit: 'corn', condition: 'healthy', confidence: '96.7%', date: new Date(Date.now() - 345600000).toISOString(), filename: 'sample5.jpg' },
+        { id: 6, fruit: 'banana', condition: 'healthy', confidence: '94.8%', date: new Date(Date.now() - 432000000).toISOString(), filename: 'sample6.jpg' },
+        { id: 7, fruit: 'apple', condition: 'scab', confidence: '91.4%', date: new Date(Date.now() - 518400000).toISOString(), filename: 'sample7.jpg' },
+        { id: 8, fruit: 'tomato', condition: 'healthy', confidence: '93.6%', date: new Date(Date.now() - 604800000).toISOString(), filename: 'sample8.jpg' }
+    ];
+}
+
+// Sample function to add a history item (for demonstration)
+function addHistoryItem(fruit, condition, confidence, date) {
+    const historyList = document.getElementById('historyList');
+    const emptyState = historyList.querySelector('.empty-state');
+    
+    if (emptyState) {
+        historyList.innerHTML = '';
+    }
+    
+    const item = document.createElement('div');
+    item.className = 'history-item';
+    item.innerHTML = `
+        <div class="item-image">
+            <img src="https://via.placeholder.com/60x60/8BC34A/ffffff?text=${fruit.charAt(0).toUpperCase()}" alt="${fruit}">
+        </div>
+        <div class="item-content">
+            <h4>${fruit.charAt(0).toUpperCase() + fruit.slice(1)} - ${condition}</h4>
+            <p class="item-details">Detected: ${fruit} | Condition: ${condition}</p>
+            <p class="item-confidence">Confidence: ${confidence}</p>
+            <p class="item-date">${date}</p>
+        </div>
+        <div class="item-status">
+            <span class="status-badge ${condition.toLowerCase()}">${condition}</span>
+        </div>
+        <div class="item-actions">
+            <button class="action-btn view" title="View Details">👁️</button>
+            <button class="action-btn delete" title="Delete" onclick="deleteHistoryItem(this)">🗑️</button>
+        </div>
+    `;
+    
+    historyList.appendChild(item);
+}
+
+function deleteHistoryItem(button) {
+    if (confirm('Delete this analysis from history?')) {
+        const item = button.closest('.history-item');
+        item.remove();
+        
+        // Check if no items left
+        const historyList = document.getElementById('historyList');
+        if (historyList.children.length === 0) {
+            loadHistory(); // Show empty state
+        }
+    }
+}
+
+// Load history and stats on page load
+document.addEventListener('DOMContentLoaded', function() {
+    loadHistory();
+    
+    // Add event listeners for filters
+    document.getElementById('searchInput').addEventListener('input', applyFilters);
+    document.getElementById('fruitFilter').addEventListener('change', applyFilters);
+    document.getElementById('statusFilter').addEventListener('change', applyFilters);
+    document.getElementById('confidenceFilter').addEventListener('change', applyFilters);
+    document.getElementById('dateFilter').addEventListener('change', applyFilters);
+    
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('themeToggle');
+    if (themeToggle) {
+        // Load saved theme (default is dark)
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-mode');
+            themeToggle.textContent = '🌙';
+        } else {
+            themeToggle.textContent = '☀️';
+        }
+        
+        themeToggle.addEventListener('click', function() {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            this.textContent = isLight ? '🌙' : '☀️';
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        });
+    }
+});
+
+function loadHistoryStats() {
+    fetch('/stats')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('historyTotal').textContent = data.total;
+            document.getElementById('historyHealthy').textContent = data.healthy;
+            document.getElementById('historyDiseased').textContent = data.diseased;
+        })
+        .catch(error => {
+            console.error('Error loading history stats:', error);
+        });
+}
+</script>
+{% endblock %}
+
+<style>
+.search-group {
+    flex: 2;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px 15px;
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.05);
+    color: var(--ink);
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: rgba(255,255,255,0.1);
+}
+
+.search-input::placeholder {
+    color: var(--muted);
+}
+
+.filter-controls {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto;
+    gap: 15px;
+    align-items: end;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.filter-group label {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+}
+
+.filter-select {
+    padding: 8px 12px;
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 6px;
+    background: rgba(255,255,255,0.05);
+    color: var(--ink);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: rgba(255,255,255,0.1);
+}
+
+.clear-filters-btn {
+    padding: 8px 16px;
+    background: rgba(255,255,255,0.1);
+    border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 6px;
+    color: var(--muted);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.clear-filters-btn:hover {
+    background: rgba(255,255,255,0.2);
+    color: var(--ink);
+    border-color: var(--accent);
+}
+
+.history-item {
+    display: grid;
+    grid-template-columns: 60px 1fr auto auto;
+    gap: 15px;
+    align-items: center;
+    padding: 15px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+}
+
+.history-item:hover {
+    background: rgba(255,255,255,0.1);
+    transform: translateY(-2px);
+}
+
+.item-image img {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.item-content h4 {
+    margin: 0 0 5px 0;
+    font-size: 16px;
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.item-details, .item-confidence, .item-date {
+    margin: 2px 0;
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-badge.healthy {
+    background: rgba(76, 175, 80, 0.2);
+    color: #4CAF50;
+}
+
+.status-badge.diseased {
+    background: rgba(244, 67, 54, 0.2);
+    color: #F44336;
+}
+
+.item-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.action-btn {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.1);
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.action-btn:hover {
+    background: var(--accent);
+    color: white;
+    transform: scale(1.1);
+}
+
+.action-btn.delete:hover {
+    background: #F44336;
+}
+
+@media (max-width: 768px) {
+    .filter-controls {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .history-item {
+        grid-template-columns: 50px 1fr auto;
+        gap: 10px;
+    }
+    
+    .item-actions {
+        flex-direction: column;
+        gap: 5px;
+    }
+}
+</style>

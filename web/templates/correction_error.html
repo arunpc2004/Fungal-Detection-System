@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="hero-header">
+    <div class="hero-nav">
+        <div class="hero-brand">
+            <div class="hero-logo">🍏</div>
+            <span>FreshGuard</span>
+        </div>
+        <nav class="hero-menu">
+            <a href="/">Home</a>
+            <a href="/analyze">Analyze</a>
+            <a href="/history">History</a>
+        </nav>
+    </div>
+    <div class="hero-content">
+        <h1>CORRECTION ERROR</h1>
+        <p>There was an issue saving your correction</p>
+    </div>
+</div>
+
+<section class="results-section">
+    <div class="container" style="text-align: center; padding: 40px;">
+        <div style="background: #F44336; color: white; padding: 30px; border-radius: 15px; margin-bottom: 30px;">
+            <h2>❌ Error Saving Correction</h2>
+            <p style="font-size: 16px; margin: 20px 0;">
+                {{ error }}
+            </p>
+            <p>Please try again or contact support if the issue persists.</p>
+        </div>
+        
+        <div class="result-actions">
+            <a class="btn" href="javascript:history.back()" style="background: #FF9800;">Go Back</a>
+            <a class="btn" href="/">Try Again</a>
+            <a class="btn" href="/dashboard">Dashboard</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+	<title>FruitGuard - AI Fruit Analysis & Health Detection</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+</head>
+<body>
+	<script>
+		// Load theme immediately to prevent flash
+		const savedTheme = localStorage.getItem('theme');
+		if (savedTheme === 'light') {
+			document.body.classList.add('light-mode');
+		}
+	</script>
+	{% block content %}{% endblock %}
+	
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script src="{{ url_for('static', filename='i18n.js') }}"></script>
+	<script src="{{ url_for('static', filename='script.js') }}"></script>
+	<script src="{{ url_for('static', filename='chatbot.js') }}"></script>
+</body>
+</html>

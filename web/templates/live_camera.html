@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="live-detection-container">
+    <div class="live-header">
+        <div class="live-title">
+            <span class="camera-icon">📷</span>
+            <h2>Live Fruit Detection</h2>
+        </div>
+        <p class="live-subtitle">Use your camera for real-time fruit and disease detection</p>
+    </div>
+    
+    <div class="camera-section">
+        <div class="camera-container">
+            <video id="webcam" autoplay playsinline muted></video>
+            <canvas id="snapshot" class="hidden"></canvas>
+            <div id="detectionBoxes"></div>
+        </div>
+        
+        <div class="camera-controls">
+            <button class="control-btn start-camera" id="startCam" type="button">
+                <span class="btn-icon">📹</span>
+                Start Camera
+            </button>
+            <button class="control-btn start-detection" id="startLive" type="button" disabled>
+                <span class="btn-icon">🔴</span>
+                Start Detection
+            </button>
+            <button class="control-btn capture" id="capture" type="button" disabled>
+                <span class="btn-icon">📸</span>
+                Capture
+            </button>
+            <button class="control-btn stop" id="stopCam" type="button">
+                <span class="btn-icon">⏹️</span>
+                Stop
+            </button>
+        </div>
+    </div>
+</div>
+<div class="how-to-section">
+    <div class="section-header">
+        <span class="section-icon">📘</span>
+        <h3>How to Use Live Detection</h3>
+    </div>
+    
+    <div class="steps-container">
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <h4>Start Camera</h4>
+                <p>Click "Start Camera" to access your device's camera</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                <h4>Begin Detection</h4>
+                <p>Click "Start Detection" to enable real-time analysis</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+                <h4>Point at Fruit</h4>
+                <p>Aim your camera at fruits or vegetables for instant analysis</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+                <h4>Capture Results</h4>
+                <p>Use "Capture" to save interesting detections for detailed analysis</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="features-section">
+    <div class="section-header">
+        <span class="section-icon">⚡</span>
+        <h3>Live Detection Features</h3>
+    </div>
+    
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">🔍</div>
+            <h4>Real-time Analysis</h4>
+            <p>Instant fruit identification and health assessment</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h4>Confidence Scoring</h4>
+            <p>Live confidence scores for each detection</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">🎯</div>
+            <h4>Bounding Boxes</h4>
+            <p>Visual indicators showing detected objects</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">💾</div>
+            <h4>Capture & Save</h4>
+            <p>Save interesting detections for later analysis</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

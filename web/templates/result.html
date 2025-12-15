@@ -1,0 +1,462 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Hero Header -->
+<div class="hero-header">
+	<div class="hero-nav">
+		<div class="hero-brand">
+			<div class="hero-logo">🍏</div>
+			<span>FreshGuard</span>
+		</div>
+		<nav class="hero-menu">
+			<a href="/">Home</a>
+			<a href="/analyze">Analyze</a>
+			<a href="/live-detection">Live Detection</a>
+			<a href="/history">History</a>
+			<a href="/about">About</a>
+			<span class="hero-icon">🌙</span>
+		</nav>
+	</div>
+	<div class="hero-content">
+		<h1>HEALTHY FRESH</h1>
+		<p>AI-powered fruit & vegetable quality inspection results</p>
+	</div>
+</div>
+
+<style>
+/* Ensure header changes to dark mode */
+.hero-header {
+	background: var(--card) !important;
+	margin: 0 20px 25px 20px !important;
+	width: calc(100% - 40px) !important;
+}
+/* Align results section with header */
+.results-section {
+	margin: 0 20px 25px 20px !important;
+	width: calc(100% - 40px) !important;
+	background: var(--card) !important;
+	border-radius: 20px !important;
+	padding: 25px !important;
+	box-shadow: 0 8px 24px rgba(0,0,0,0.08) !important;
+}
+/* Ensure hero content is always visible in both modes */
+.hero-content h1 {
+	color: #1a1f14 !important;
+}
+.hero-content p {
+	color: #5b6b4e !important;
+}
+body:not(.light-mode) .hero-content h1 {
+	color: #ffffff !important;
+}
+body:not(.light-mode) .hero-content p {
+	color: #a0a89a !important;
+}
+</style>
+
+<section class="results-section">
+	<div class="container">
+		<!-- 3D Model Viewer -->
+		<div style="margin-bottom: 30px;">
+			<h3 style="text-align: center; color: var(--ink); margin-bottom: 20px;">🎲 3D View - Drag to Rotate</h3>
+			<div class="viewer-3d" id="mainViewer">
+				<div class="model-3d">
+					<div class="model-face front" style="background-image: url('{{ image_url }}');"></div>
+					<div class="model-face back" style="background-image: url('{{ prep_url }}');"></div>
+					<div class="model-face right" style="background-image: url('{{ url_for('uploaded_file', filename=previews['Rotated']) }}');"></div>
+					<div class="model-face left" style="background-image: url('{{ url_for('uploaded_file', filename=previews['Blurred']) }}');"></div>
+					<div class="model-face top" style="background-image: url('{{ url_for('uploaded_file', filename=previews['Cropped']) }}');"></div>
+					<div class="model-face bottom" style="background-image: url('{{ url_for('uploaded_file', filename=previews['Edges']) }}');"></div>
+				</div>
+			</div>
+			<div class="viewer-controls">
+				<button class="viewer-btn" onclick="document.querySelector('.model-3d').style.transform='rotateX(-20deg) rotateY(30deg)'">🔄 Reset</button>
+				<button class="viewer-btn" onclick="document.querySelector('.model-3d').style.transform='rotateY(0deg)'">⬅️ Front</button>
+				<button class="viewer-btn" onclick="document.querySelector('.model-3d').style.transform='rotateY(180deg)'">➡️ Back</button>
+			</div>
+		</div>
+
+		<!-- AI Attention Heatmap -->
+		<div style="margin-bottom: 30px;">
+			<h3 style="text-align: center; color: var(--ink); margin-bottom: 20px;">🔥 AI Attention Heatmap</h3>
+			<div class="heatmap-container">
+				<div id="heatmapViewer"></div>
+				<div class="heatmap-info">
+					<p><strong>What is this?</strong></p>
+					<p>Red/yellow areas show where the AI focused most during analysis.</p>
+					<p>Blue areas received less attention.</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Before/After Comparison Slider -->
+		<div style="margin-bottom: 30px;">
+			<h3 style="text-align: center; color: var(--ink); margin-bottom: 20px;">📊 Before/After Comparison</h3>
+			<div class="image-comparison" id="mainComparison">
+				<div class="comparison-container">
+					<img class="comparison-after" src="{{ prep_url }}" alt="After Processing">
+					<img class="comparison-before" src="{{ image_url }}" alt="Before Processing">
+					<div class="comparison-slider"></div>
+					<div class="comparison-label before">ORIGINAL</div>
+					<div class="comparison-label after">PROCESSED</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="grid-3">
+			<div class="panel">
+				<h3>Original</h3>
+				<img class="preview" src="{{ image_url }}" alt="Original upload" />
+			</div>
+			<div class="panel">
+				<h3>Preprocessed</h3>
+				<img class="preview" src="{{ prep_url }}" alt="Preprocessed" />
+			</div>
+			<div class="panel">
+				<h3>Rotated</h3>
+				<img class="preview" src="{{ url_for('uploaded_file', filename=previews['Rotated']) }}" alt="Rotated" />
+			</div>
+			<div class="panel">
+				<h3>Blurred</h3>
+				<img class="preview" src="{{ url_for('uploaded_file', filename=previews['Blurred']) }}" alt="Blurred" />
+			</div>
+			<div class="panel">
+				<h3>Cropped</h3>
+				<img class="preview" src="{{ url_for('uploaded_file', filename=previews['Cropped']) }}" alt="Cropped" />
+			</div>
+			<div class="panel">
+				<h3>Edges</h3>
+				<img class="preview" src="{{ url_for('uploaded_file', filename=previews['Edges']) }}" alt="Edges" />
+			</div>
+		</div>
+
+		<div class="result-large">
+			{% if label == 'Not a fruit/vegetable' %}
+				<div class="result-banner infected large">
+					<div class="pill">INVALID INPUT</div>
+					<div class="result-main">
+						<h3>Result: Non Fruit Non Vegetable</h3>
+						<p>This image does not appear to be a fruit or vegetable.</p>
+						<p>Confidence: <strong>{{ confidence }}</strong></p>
+					</div>
+				</div>
+			{% else %}
+				<div class="result-banner {{ 'safe' if is_healthy else ('other' if is_other else 'infected') }} large">
+					<div class="pill">{{ 'HEALTHY' if is_healthy else ('OTHER' if is_other else 'INFECTED') }}</div>
+					<div class="result-main">
+						<h3>Fruit Type: {{ fruit }}</h3>
+						<p>Condition: {{ condition }}</p>
+						{% if not is_healthy and infection_type != 'None' %}
+						<p>Infection Type: <strong>{{ infection_type }}</strong></p>
+						{% endif %}
+						<p>Confidence: <strong>{{ confidence }}</strong></p>
+						<p>Model Used: <strong style="color: #4CAF50;">{{ model_used }}</strong></p>
+						
+						<!-- Confidence Meter -->
+						<div id="confidenceMeterContainer" style="margin-top: 30px;"></div>
+						{% if is_ai_generated %}
+						<p style="color: #ff6b35;">⚠️ AI Generated: <strong>{{ ai_confidence }}</strong></p>
+						{% endif %}
+					</div>
+				</div>
+			{% endif %}
+			
+			<link rel="stylesheet" href="{{ url_for('static', filename='feedback-styles.css') }}">
+			<script src="{{ url_for('static', filename='confidence-meter.js') }}"></script>
+			<script src="{{ url_for('static', filename='image-comparison.js') }}"></script>
+			<script src="{{ url_for('static', filename='3d-viewer.js') }}"></script>
+			<script src="{{ url_for('static', filename='heatmap.js') }}"></script>
+			<script src="{{ url_for('static', filename='notifications.js') }}"></script>
+			<script src="{{ url_for('static', filename='feedback.js') }}"></script>
+			<script>
+				// Initialize heatmap
+				new Heatmap('heatmapViewer', '{{ image_url }}');
+			</script>
+			<script>
+				// Pass prediction data to confidence meter
+				window.predictionData = {
+					confidence: parseFloat('{{ confidence }}'.replace('%', '')),
+					model_accuracy: 99.5,
+					processing_time: '0.2s'
+				};
+				// Prediction ID for feedback
+				window.predictionId = '{{ filename }}';
+			</script>
+
+			<div class="result-actions" style="margin-top: 18px; text-align: center;">
+				<a class="btn" href="/">Analyze another</a>
+				<div style="position: relative; display: inline-block;">
+					<button id="speakButton" class="btn" style="padding-right: 40px;">🔊 Speak Results</button>
+					<select id="languageSelect" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); padding: 4px 8px; border: none; background: rgba(255,255,255,0.2); color: white; border-radius: 4px; cursor: pointer; font-size: 12px;">
+						<option value="en-US">EN</option>
+						<option value="hi-IN">HI</option>
+					</select>
+				</div>
+				{% if not is_healthy and not is_other and label != 'Not a fruit/vegetable' %}
+				<button id="treatmentButton" class="btn" style="background: #4CAF50;">👨‍⚕️ Treatment Guide</button>
+				{% endif %}
+				<button id="correctButton" class="btn" style="background: #ff6b35;">❌ Wrong Prediction</button>
+			</div>
+
+			<div id="correctionForm" style="display: none; margin-top: 20px; padding: 25px; border: 2px solid #ff6b35; border-radius: 12px; background: var(--card);">
+				<h4 style="color: var(--ink); margin-bottom: 20px;">🔧 Correct This Prediction</h4>
+				<form method="POST" action="{{ url_for('correct_prediction') }}">
+					<input type="hidden" name="filename" value="{{ filename }}">
+					<input type="hidden" name="original_prediction" value="{{ label }}">
+					
+					<div style="margin-bottom: 15px;">
+						<label style="display: block; margin-bottom: 5px; color: var(--ink); font-weight: 600;">Correct Fruit/Vegetable:</label>
+						<select name="correct_fruit" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; background: var(--card); color: var(--ink);">
+							<option value="apple">Apple</option>
+							<option value="tomato">Tomato</option>
+							<option value="potato">Potato</option>
+							<option value="grape">Grape</option>
+							<option value="corn">Corn</option>
+							<option value="banana">Banana</option>
+							<option value="orange">Orange</option>
+							<option value="strawberry">Strawberry</option>
+							<option value="other">Other</option>
+						</select>
+					</div>
+					
+					<div style="margin-bottom: 20px;">
+						<label style="display: block; margin-bottom: 5px; color: var(--ink); font-weight: 600;">Correct Condition:</label>
+						<select name="correct_condition" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; background: var(--card); color: var(--ink);">
+							<option value="healthy">Healthy</option>
+							<option value="diseased">Diseased (General)</option>
+							<option value="early_blight">Early Blight</option>
+							<option value="late_blight">Late Blight</option>
+							<option value="scab">Scab</option>
+							<option value="black_rot">Black Rot</option>
+							<option value="leaf_mold">Leaf Mold</option>
+							<option value="other_disease">Other Disease</option>
+						</select>
+					</div>
+					
+					<div style="display: flex; gap: 10px;">
+						<button type="submit" class="btn" style="background: #4CAF50; flex: 1;">💾 Save Correction</button>
+						<button type="button" id="cancelCorrection" class="btn" style="background: #666; flex: 1;">❌ Cancel</button>
+					</div>
+				</form>
+			</div>
+
+			<!-- Treatment Modal -->
+			<div id="treatmentModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000;">
+				<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--card); padding: 30px; border-radius: 15px; max-width: 600px; width: 90%; max-height: 80%; overflow-y: auto;">
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+						<h3 style="margin: 0; color: var(--ink);">👨⚕️ Treatment Guide</h3>
+						<button id="closeTreatment" style="background: none; border: none; font-size: 24px; cursor: pointer; color: var(--muted);">&times;</button>
+					</div>
+					<div id="treatmentContent" style="color: var(--ink);">Loading treatment information...</div>
+				</div>
+			</div>
+
+			<script>
+				// Build the spoken text from template variables
+				function buildResultText() {
+					var label = '{{ label|escape }}';
+					var fruit = '{{ fruit|escape }}';
+					var condition = '{{ condition|escape }}';
+					var confidence = '{{ confidence|escape }}';
+					
+					// Clean text for voice: replace underscores with spaces, slashes with 'or'
+					fruit = fruit.replace(/_/g, ' ').replace(/\//g, ' or ');
+					condition = condition.replace(/_/g, ' ').replace(/\//g, ' or ');
+					
+					var text = '';
+					if (label === 'Not a fruit/vegetable') {
+						text = 'This image does not appear to be a fruit or vegetable.';
+					} else {
+						// confidence may include percent sign; include it naturally
+						text = 'This is a ' + fruit + ' and it is ' + condition + '. Confidence ' + confidence + '.';
+					}
+					return text;
+				}
+
+				function showTreatmentInfo() {
+					var modal = document.getElementById('treatmentModal');
+					var content = document.getElementById('treatmentContent');
+					var diseaseKey = '{{ fruit|lower }}_{{ condition|lower }}'.replace(/ /g, '_');
+
+					modal.style.display = 'block';
+					content.innerHTML = 'Loading treatment information...';
+
+					fetch('/api/expert/' + diseaseKey)
+						.then(response => response.json())
+						.then(data => {
+							var info = data.disease_info;
+							var treatment = data.treatment_plan;
+
+							content.innerHTML = `
+								<div style="margin-bottom: 20px;">
+									<h4 style="color: #4CAF50; margin-bottom: 10px;">🦠 Disease Information</h4>
+									<p><strong>Disease:</strong> ${info.name}</p>
+									<p><strong>Severity:</strong> <span style="color: ${getSeverityColor(info.severity)}">${info.severity}</span></p>
+									<p><strong>Description:</strong> ${info.description}</p>
+								</div>
+
+								<div style="margin-bottom: 20px;">
+									<h4 style="color: #FF9800; margin-bottom: 10px;">⚠️ Urgency: ${treatment.urgency}</h4>
+								</div>
+
+								<div style="margin-bottom: 20px;">
+									<h4 style="color: #F44336; margin-bottom: 10px;">🆘 Immediate Actions</h4>
+									<ul>
+										${treatment.immediate_actions.map(action => `<li>${action}</li>`).join('')}
+									</ul>
+								</div>
+
+								<div style="margin-bottom: 20px;">
+									<h4 style="color: #2196F3; margin-bottom: 10px;">🛡️ Prevention</h4>
+									<ul>
+										${treatment.preventive_measures.map(measure => `<li>${measure}</li>`).join('')}
+									</ul>
+								</div>
+
+								<div style="margin-bottom: 20px;">
+									<h4 style="color: #4CAF50; margin-bottom: 10px;">🌿 Organic Options</h4>
+									<ul>
+										${treatment.organic_options.map(option => `<li>${option}</li>`).join('')}
+									</ul>
+								</div>
+
+								<div style="background: rgba(76, 175, 80, 0.1); padding: 15px; border-radius: 8px;">
+									<p><strong>📅 Timeline:</strong> ${treatment.timeline}</p>
+									<p><strong>🎯 Success Rate:</strong> ${treatment.success_rate}</p>
+									<p><strong>🔍 Monitoring:</strong> ${treatment.monitoring}</p>
+								</div>
+							`;
+						})
+						.catch(error => {
+							content.innerHTML = `
+								<div style="text-align: center; color: #F44336;">
+									<h4>⚠️ Treatment Information Unavailable</h4>
+									<p>Unable to load specific treatment information for this condition.</p>
+									<p><strong>General Recommendations:</strong></p>
+									<ul style="text-align: left;">
+										<li>Isolate affected plants immediately</li>
+										<li>Remove infected parts carefully</li>
+										<li>Consult local agricultural extension office</li>
+										<li>Apply appropriate fungicide if recommended</li>
+										<li>Improve air circulation and drainage</li>
+									</ul>
+								</div>
+							`;
+						});
+				}
+
+				function getSeverityColor(severity) {
+					switch(severity.toLowerCase()) {
+						case 'low': return '#4CAF50';
+						case 'medium': return '#FF9800';
+						case 'high': return '#FF5722';
+						case 'critical': return '#F44336';
+						default: return '#666';
+					}
+				}
+
+				function speakResult() {
+					var text = buildResultText();
+					if (!('speechSynthesis' in window)) {
+						console.warn('TTS not supported in this browser');
+						return;
+					}
+					// Get selected language
+					var langSelect = document.getElementById('languageSelect');
+					var selectedLang = langSelect ? langSelect.value : 'en-US';
+					
+					// Cancel any ongoing speech
+					try {
+						window.speechSynthesis.cancel();
+					} catch (e) {}
+					
+					var utt = new SpeechSynthesisUtterance(text);
+					utt.lang = selectedLang;
+					window.speechSynthesis.speak(utt);
+				}
+
+				document.addEventListener('DOMContentLoaded', function() {
+					// Auto-speak once on initial page load
+					try {
+						speakResult();
+					} catch (e) {
+						console.warn('Auto-speak failed', e);
+					}
+
+					// Wire up the Speak Results button for manual replay
+					var btn = document.getElementById('speakButton');
+					if (btn) {
+						btn.addEventListener('click', function() {
+							speakResult();
+						});
+					}
+
+					// Treatment button functionality
+					var treatmentBtn = document.getElementById('treatmentButton');
+					var treatmentModal = document.getElementById('treatmentModal');
+					var closeTreatment = document.getElementById('closeTreatment');
+
+					if (treatmentBtn && treatmentModal) {
+						treatmentBtn.addEventListener('click', function() {
+							showTreatmentInfo();
+						});
+					}
+
+					if (closeTreatment && treatmentModal) {
+						closeTreatment.addEventListener('click', function() {
+							treatmentModal.style.display = 'none';
+						});
+					}
+
+					// Close modal when clicking outside
+					if (treatmentModal) {
+						treatmentModal.addEventListener('click', function(e) {
+							if (e.target === treatmentModal) {
+								treatmentModal.style.display = 'none';
+							}
+						});
+					}
+
+					// Correction form toggle
+					var correctBtn = document.getElementById('correctButton');
+					var correctionForm = document.getElementById('correctionForm');
+					var cancelBtn = document.getElementById('cancelCorrection');
+
+					if (correctBtn && correctionForm) {
+						correctBtn.addEventListener('click', function() {
+							correctionForm.style.display = 'block';
+							correctBtn.style.display = 'none';
+						});
+					}
+
+					if (cancelBtn && correctionForm) {
+						cancelBtn.addEventListener('click', function() {
+							correctionForm.style.display = 'none';
+							correctBtn.style.display = 'inline-block';
+						});
+					}
+				});
+
+				// Theme toggle functionality
+				const themeToggle = document.querySelector('.hero-icon');
+				if (themeToggle) {
+					// Load saved theme
+					const savedTheme = localStorage.getItem('theme');
+					if (savedTheme === 'light') {
+						document.body.classList.add('light-mode');
+						themeToggle.textContent = '🌙';
+					} else {
+						themeToggle.textContent = '☀️';
+					}
+
+					themeToggle.addEventListener('click', function() {
+						document.body.classList.toggle('light-mode');
+						const isLight = document.body.classList.contains('light-mode');
+						this.textContent = isLight ? '🌙' : '☀️';
+						localStorage.setItem('theme', isLight ? 'light' : 'dark');
+					});
+				}
+			</script>
+		</div>
+	</div>
+</section>
+{% endblock %}

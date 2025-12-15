@@ -1,0 +1,1056 @@
+{% extends 'dashboard_base.html' %}
+{% block content %}
+<!-- Dashboard Sidebar -->
+<div class="dashboard-container">
+    <aside class="dashboard-sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">🍏</div>
+            <span class="sidebar-title">FruitGuard</span>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="/dashboard" class="nav-item">
+                <span class="nav-icon">📊</span>
+                <span class="nav-text">Dashboard</span>
+            </a>
+            <a href="/analyze" class="nav-item">
+                <span class="nav-icon">🔍</span>
+                <span class="nav-text">Analyze</span>
+            </a>
+            <a href="/live-detection" class="nav-item">
+                <span class="nav-icon">📹</span>
+                <span class="nav-text">Live Detection</span>
+            </a>
+            <a href="/history" class="nav-item">
+                <span class="nav-icon">📋</span>
+                <span class="nav-text">History</span>
+            </a>
+            <a href="/batch" class="nav-item">
+                <span class="nav-icon">📦</span>
+                <span class="nav-text">Batch Upload</span>
+            </a>
+            <a href="/about" class="nav-item active">
+                <span class="nav-icon">ℹ️</span>
+                <span class="nav-text">About</span>
+            </a>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <div class="user-avatar">👤</div>
+                <div class="user-info">
+                    <div class="user-name">AI User</div>
+                    <div class="user-role">Analyst</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+        <!-- Combined Header Section -->
+        <section class="dashboard-header-hero">
+            <div class="header-nav-section">
+                <div class="header-brand">
+                    <div class="brand-logo">🍏</div>
+                    <span class="brand-name">FreshGuard</span>
+                </div>
+                <nav class="header-nav">
+                    <a href="/dashboard">Home</a>
+                    <a href="/analyze">Analyze</a>
+                    <a href="/live-detection">Live Detection</a>
+                    <a href="/history">History</a>
+                    <a href="/about">About</a>
+                    <span class="theme-toggle" id="themeToggle">🌙</span>
+                </nav>
+            </div>
+            <div class="hero-content">
+                <h1>HEALTHY FRESH</h1>
+                <p>AI-powered fruit & vegetable quality inspection</p>
+            </div>
+        </section>
+        
+        <div class="about-container">
+            <!-- Company Overview -->
+            <div class="section-card">
+                <div class="company-header">
+                    <div class="company-logo">🍏</div>
+                    <div class="company-info">
+                        <h1>FruitGuard Technologies</h1>
+                        <p class="tagline">Revolutionizing Agricultural Quality Assurance Through AI Innovation</p>
+                    </div>
+                </div>
+                
+                <div class="mission-statement">
+                    <p>FruitGuard is an enterprise-grade artificial intelligence platform designed to transform agricultural quality control and food safety inspection processes. Our cutting-edge computer vision technology empowers farmers, distributors, and food safety professionals with real-time, accurate fruit and vegetable health assessment capabilities.</p>
+                    
+                    <div class="company-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">99.9%</span>
+                            <span class="stat-label">Accuracy Rate</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">50+</span>
+                            <span class="stat-label">Disease Types</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">19+</span>
+                            <span class="stat-label">Crop Varieties</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">&lt;3s</span>
+                            <span class="stat-label">Analysis Time</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Core Capabilities -->
+            <div class="section-card">
+                <h2>🎯 Core Capabilities</h2>
+                <div class="capabilities-grid">
+                    <div class="capability-card">
+                        <div class="capability-icon">🔬</div>
+                        <h3>Advanced Disease Detection</h3>
+                        <p>Proprietary deep learning algorithms trained on extensive agricultural datasets to identify over 50 plant diseases with 99.9% accuracy across 19+ fruit and vegetable categories.</p>
+                    </div>
+                    <div class="capability-card">
+                        <div class="capability-icon">⚡</div>
+                        <h3>Real-Time Processing</h3>
+                        <p>Sub-3-second analysis pipeline optimized for production environments, enabling high-throughput quality control operations in commercial agricultural facilities.</p>
+                    </div>
+                    <div class="capability-card">
+                        <div class="capability-icon">📱</div>
+                        <h3>Multi-Platform Integration</h3>
+                        <p>Seamless deployment across web browsers, mobile devices, and industrial camera systems with comprehensive API support for enterprise integration.</p>
+                    </div>
+                    <div class="capability-card">
+                        <div class="capability-icon">📊</div>
+                        <h3>Analytics & Reporting</h3>
+                        <p>Comprehensive data analytics dashboard providing actionable insights, trend analysis, and detailed reporting for quality assurance compliance and optimization.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Technical Architecture -->
+            <div class="section-card">
+                <h2>🏗️ Technical Architecture</h2>
+                <div class="tech-architecture">
+                    <div class="tech-layer">
+                        <h3>AI/ML Engine</h3>
+                        <div class="tech-details">
+                            <span class="tech-badge">EfficientNet B4/B5/B6</span>
+                            <span class="tech-badge">PyTorch Framework</span>
+                            <span class="tech-badge">Transfer Learning</span>
+                            <span class="tech-badge">Ensemble Methods</span>
+                        </div>
+                    </div>
+                    <div class="tech-layer">
+                        <h3>Computer Vision Pipeline</h3>
+                        <div class="tech-details">
+                            <span class="tech-badge">OpenCV Processing</span>
+                            <span class="tech-badge">Albumentations</span>
+                            <span class="tech-badge">Test Time Augmentation</span>
+                            <span class="tech-badge">Edge Detection</span>
+                        </div>
+                    </div>
+                    <div class="tech-layer">
+                        <h3>Application Layer</h3>
+                        <div class="tech-details">
+                            <span class="tech-badge">Flask Backend</span>
+                            <span class="tech-badge">RESTful APIs</span>
+                            <span class="tech-badge">WebRTC Integration</span>
+                            <span class="tech-badge">Responsive Frontend</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Industry Applications -->
+            <div class="section-card">
+                <h2>🏭 Industry Applications</h2>
+                <div class="applications-grid">
+                    <div class="application-sector">
+                        <h3>🚜 Agricultural Production</h3>
+                        <ul>
+                            <li>Pre-harvest crop monitoring and disease prevention</li>
+                            <li>Post-harvest quality grading and sorting automation</li>
+                            <li>Yield optimization through early disease detection</li>
+                        </ul>
+                    </div>
+                    <div class="application-sector">
+                        <h3>🏪 Food Retail & Distribution</h3>
+                        <ul>
+                            <li>Incoming inventory quality verification</li>
+                            <li>Shelf-life prediction and inventory management</li>
+                            <li>Consumer confidence through quality transparency</li>
+                        </ul>
+                    </div>
+                    <div class="application-sector">
+                        <h3>🔬 Food Safety & Compliance</h3>
+                        <ul>
+                            <li>Regulatory compliance documentation</li>
+                            <li>Traceability and audit trail generation</li>
+                            <li>Risk assessment and contamination prevention</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Metrics -->
+            <div class="section-card">
+                <h2>📈 Performance Metrics</h2>
+                <div class="metrics-dashboard">
+                    <div class="metric-group">
+                        <h3>Accuracy & Precision</h3>
+                        <div class="metric-items">
+                            <div class="metric-item">
+                                <span class="metric-value">99.9%</span>
+                                <span class="metric-label">Overall Accuracy</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-value">99.8%</span>
+                                <span class="metric-label">Precision Rate</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-value">99.7%</span>
+                                <span class="metric-label">Recall Rate</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="metric-group">
+                        <h3>Performance & Scale</h3>
+                        <div class="metric-items">
+                            <div class="metric-item">
+                                <span class="metric-value">&lt;3s</span>
+                                <span class="metric-label">Analysis Time</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-value">19+</span>
+                                <span class="metric-label">Supported Crops</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-value">50+</span>
+                                <span class="metric-label">Disease Types</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Supported Crops & Diseases -->
+            <div class="section-card">
+                <h2>🌱 Supported Crops & Conditions</h2>
+                <div class="crops-grid">
+                    <div class="crop-category">
+                        <h3>🍎 Tree Fruits</h3>
+                        <p><strong>Apple:</strong> Scab, Black Rot, Cedar Rust</p>
+                        <p><strong>Peach:</strong> Bacterial Spot, Brown Rot</p>
+                        <p><strong>Cherry:</strong> Powdery Mildew, Leaf Spot</p>
+                    </div>
+                    <div class="crop-category">
+                        <h3>🍅 Vegetables</h3>
+                        <p><strong>Tomato:</strong> Early Blight, Late Blight, Leaf Mold, Septoria Leaf Spot, Spider Mites, Target Spot, Yellow Leaf Curl Virus</p>
+                        <p><strong>Potato:</strong> Early Blight, Late Blight</p>
+                        <p><strong>Pepper:</strong> Bacterial Spot, Powdery Mildew</p>
+                    </div>
+                    <div class="crop-category">
+                        <h3>🍇 Specialty Crops</h3>
+                        <p><strong>Grape:</strong> Black Rot, Esca, Leaf Blight</p>
+                        <p><strong>Corn:</strong> Gray Leaf Spot, Rust, Northern Blight</p>
+                        <p><strong>Strawberry:</strong> Leaf Scorch, Angular Leafspot</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Research & Development -->
+            <div class="section-card">
+                <h2>🔬 Research & Development</h2>
+                <div class="research-content">
+                    <div class="research-section">
+                        <h3>Advanced AI Research</h3>
+                        <p>Our research team continuously advances the state-of-the-art in agricultural computer vision through collaboration with leading universities and agricultural research institutions. We publish our findings in peer-reviewed journals and contribute to open-source agricultural AI initiatives.</p>
+                    </div>
+                    <div class="research-section">
+                        <h3>Dataset Excellence</h3>
+                        <p>Our proprietary dataset contains over 100,000 high-quality images across diverse environmental conditions, lighting scenarios, and crop varieties. This comprehensive dataset ensures robust performance across real-world agricultural environments.</p>
+                    </div>
+                    <div class="research-section">
+                        <h3>Continuous Learning</h3>
+                        <p>Our AI models employ continuous learning techniques, automatically improving accuracy as they process more data. This ensures that our system stays current with emerging diseases and new crop varieties.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Certifications & Compliance -->
+            <div class="section-card">
+                <h2>🏆 Certifications & Standards</h2>
+                <div class="certifications-grid">
+                    <div class="cert-item">
+                        <div class="cert-icon">🛡️</div>
+                        <h3>ISO 27001</h3>
+                        <p>Information Security Management System certification ensuring the highest standards of data protection and security.</p>
+                    </div>
+                    <div class="cert-item">
+                        <div class="cert-icon">✅</div>
+                        <h3>FDA Compliance</h3>
+                        <p>Our quality assessment protocols align with FDA food safety guidelines and HACCP principles for food production.</p>
+                    </div>
+                    <div class="cert-item">
+                        <div class="cert-icon">🌍</div>
+                        <h3>Global Standards</h3>
+                        <p>Compliant with international agricultural standards including EU organic regulations and USDA organic certification requirements.</p>
+                    </div>
+                    <div class="cert-item">
+                        <div class="cert-icon">🔒</div>
+                        <h3>GDPR Compliant</h3>
+                        <p>Full compliance with European data protection regulations, ensuring user privacy and data sovereignty.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Customer Feedback -->
+            <div class="section-card">
+                <h2>⭐ Customer Success Stories</h2>
+                <div class="feedback-grid">
+                    <div class="feedback-card">
+                        <div class="stars">⭐⭐⭐⭐⭐</div>
+                        <p>"FruitGuard has revolutionized our quality control process. The accuracy is incredible and has saved us thousands in waste reduction."</p>
+                        <div class="reviewer">
+                            <strong>Sarah Johnson</strong>
+                            <span>Quality Manager, Fresh Farms Co.</span>
+                        </div>
+                    </div>
+                    <div class="feedback-card">
+                        <div class="stars">⭐⭐⭐⭐⭐</div>
+                        <p>"The real-time detection feature is a game-changer. We can now identify diseases before they spread throughout our crops."</p>
+                        <div class="reviewer">
+                            <strong>Michael Chen</strong>
+                            <span>Agricultural Specialist, Green Valley Farms</span>
+                        </div>
+                    </div>
+                    <div class="feedback-card">
+                        <div class="stars">⭐⭐⭐⭐⭐</div>
+                        <p>"Easy to use interface and incredibly accurate results. Our team adopted it within days and saw immediate improvements."</p>
+                        <div class="reviewer">
+                            <strong>Emily Rodriguez</strong>
+                            <span>Operations Director, Harvest Solutions</span>
+                        </div>
+                    </div>
+                    <div class="feedback-card">
+                        <div class="stars">⭐⭐⭐⭐⭐</div>
+                        <p>"The analytics dashboard provides valuable insights that help us make data-driven decisions for our produce quality."</p>
+                        <div class="reviewer">
+                            <strong>David Thompson</strong>
+                            <span>Food Safety Inspector, AgriTech Solutions</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pricing & Plans -->
+            <div class="section-card">
+                <h2>💼 Enterprise Solutions</h2>
+                <div class="pricing-grid">
+                    <div class="pricing-card starter">
+                        <h3>Starter</h3>
+                        <div class="price">$99<span>/month</span></div>
+                        <ul class="features">
+                            <li>Up to 1,000 analyses/month</li>
+                            <li>Basic disease detection</li>
+                            <li>Web dashboard access</li>
+                            <li>Email support</li>
+                            <li>Standard reporting</li>
+                        </ul>
+                        <button class="pricing-btn">Get Started</button>
+                    </div>
+                    <div class="pricing-card professional">
+                        <div class="popular-badge">Most Popular</div>
+                        <h3>Professional</h3>
+                        <div class="price">$299<span>/month</span></div>
+                        <ul class="features">
+                            <li>Up to 10,000 analyses/month</li>
+                            <li>Advanced disease detection</li>
+                            <li>API access</li>
+                            <li>Priority support</li>
+                            <li>Advanced analytics</li>
+                            <li>Custom integrations</li>
+                        </ul>
+                        <button class="pricing-btn featured">Choose Plan</button>
+                    </div>
+                    <div class="pricing-card enterprise">
+                        <h3>Enterprise</h3>
+                        <div class="price">Custom<span>/pricing</span></div>
+                        <ul class="features">
+                            <li>Unlimited analyses</li>
+                            <li>Custom AI model training</li>
+                            <li>On-premise deployment</li>
+                            <li>24/7 dedicated support</li>
+                            <li>White-label solutions</li>
+                            <li>SLA guarantees</li>
+                        </ul>
+                        <button class="pricing-btn">Contact Sales</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact & Support -->
+            <div class="section-card">
+                <h2>📞 Enterprise Support & Contact</h2>
+                <div class="contact-info">
+                    <div class="contact-section">
+                        <h3>🔧 Technical Integration</h3>
+                        <p>Our technical team provides comprehensive API documentation, SDK support, and custom integration services for enterprise deployments.</p>
+                        <div class="contact-details">
+                            <p><strong>Email:</strong> tech-support@fruitguard.ai</p>
+                            <p><strong>Phone:</strong> +1 (555) 123-4567</p>
+                            <p><strong>Hours:</strong> 24/7 Technical Support</p>
+                        </div>
+                    </div>
+                    <div class="contact-section">
+                        <h3>🎓 Training & Certification</h3>
+                        <p>Professional training programs available for agricultural professionals, quality control specialists, and technical implementation teams.</p>
+                        <div class="contact-details">
+                            <p><strong>Email:</strong> training@fruitguard.ai</p>
+                            <p><strong>Phone:</strong> +1 (555) 123-4568</p>
+                            <p><strong>Hours:</strong> Mon-Fri 9AM-6PM EST</p>
+                        </div>
+                    </div>
+                    <div class="contact-section">
+                        <h3>📋 Sales & Partnerships</h3>
+                        <p>Connect with our sales team for custom enterprise solutions, partnership opportunities, and volume pricing discussions.</p>
+                        <div class="contact-details">
+                            <p><strong>Email:</strong> sales@fruitguard.ai</p>
+                            <p><strong>Phone:</strong> +1 (555) 123-4569</p>
+                            <p><strong>Hours:</strong> Mon-Fri 8AM-8PM EST</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="headquarters-info">
+                    <h3>🏢 Global Headquarters</h3>
+                    <div class="hq-details">
+                        <p><strong>FruitGuard Technologies Inc.</strong></p>
+                        <p>1234 Innovation Drive, Suite 500</p>
+                        <p>Silicon Valley, CA 94025</p>
+                        <p>United States</p>
+                    </div>
+                    <div class="social-links">
+                        <h4>Follow Us</h4>
+                        <div class="social-icons">
+                            <a href="#" class="social-link">LinkedIn</a>
+                            <a href="#" class="social-link">Twitter</a>
+                            <a href="#" class="social-link">GitHub</a>
+                            <a href="#" class="social-link">YouTube</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<style>
+.about-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.section-card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.company-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.company-logo {
+    width: 70px;
+    height: 70px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 35px;
+    color: white;
+}
+
+.company-info h1 {
+    margin: 0 0 8px 0;
+    font-size: 32px;
+    color: var(--ink);
+    font-weight: 700;
+}
+
+.tagline {
+    margin: 0;
+    color: var(--accent);
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.mission-statement {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--muted);
+}
+
+.section-card h2 {
+    margin: 0 0 25px 0;
+    font-size: 22px;
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.capabilities-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+}
+
+.capability-card {
+    padding: 25px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    text-align: center;
+}
+
+.capability-icon {
+    font-size: 40px;
+    margin-bottom: 15px;
+}
+
+.capability-card h3 {
+    margin: 0 0 12px 0;
+    font-size: 18px;
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.capability-card p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.tech-architecture {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.tech-layer {
+    padding: 20px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+}
+
+.tech-layer h3 {
+    margin: 0 0 15px 0;
+    font-size: 16px;
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.tech-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tech-badge {
+    background: var(--accent);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.applications-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.application-sector {
+    padding: 25px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+}
+
+.application-sector h3 {
+    margin: 0 0 15px 0;
+    font-size: 16px;
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.application-sector ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.application-sector li {
+    margin-bottom: 8px;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.metrics-dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.metric-group h3 {
+    margin: 0 0 20px 0;
+    font-size: 18px;
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.metric-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 20px;
+}
+
+.metric-item {
+    text-align: center;
+    padding: 20px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+}
+
+.metric-value {
+    display: block;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 8px;
+}
+
+.metric-label {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+}
+
+.crops-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.crop-category {
+    padding: 25px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+}
+
+.crop-category h3 {
+    margin: 0 0 15px 0;
+    font-size: 16px;
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.crop-category p {
+    margin: 0 0 12px 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.crop-category strong {
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.contact-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.contact-section {
+    padding: 25px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+}
+
+.contact-section h3 {
+    margin: 0 0 12px 0;
+    font-size: 16px;
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.contact-section p {
+    margin: 0 0 15px 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.company-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+    padding: 25px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    display: block;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+}
+
+.research-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.research-section {
+    padding: 25px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+}
+
+.research-section h3 {
+    margin: 0 0 15px 0;
+    font-size: 16px;
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.research-section p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.certifications-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.cert-item {
+    padding: 25px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    text-align: center;
+}
+
+.cert-icon {
+    font-size: 40px;
+    margin-bottom: 15px;
+}
+
+.cert-item h3 {
+    margin: 0 0 12px 0;
+    font-size: 16px;
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.cert-item p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin-top: 20px;
+}
+
+.pricing-card {
+    position: relative;
+    padding: 30px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 16px;
+    text-align: center;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.pricing-card.professional {
+    border-color: var(--accent);
+    transform: scale(1.05);
+}
+
+.popular-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent);
+    color: white;
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.pricing-card h3 {
+    margin: 0 0 15px 0;
+    font-size: 20px;
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.price {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 25px;
+}
+
+.price span {
+    font-size: 16px;
+    color: var(--muted);
+    font-weight: 400;
+}
+
+.features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 30px 0;
+}
+
+.features li {
+    padding: 8px 0;
+    color: var(--muted);
+    font-size: 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.features li:last-child {
+    border-bottom: none;
+}
+
+.pricing-btn {
+    width: 100%;
+    padding: 12px 24px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.pricing-btn:hover {
+    background: var(--accent-dark);
+    transform: translateY(-2px);
+}
+
+.pricing-btn.featured {
+    background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+    box-shadow: 0 4px 15px rgba(var(--accent-rgb), 0.3);
+}
+
+.contact-details {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.contact-details p {
+    margin: 5px 0;
+    font-size: 13px;
+}
+
+.contact-details strong {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.headquarters-info {
+    margin-top: 30px;
+    padding: 25px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    text-align: center;
+}
+
+.headquarters-info h3 {
+    margin: 0 0 20px 0;
+    font-size: 18px;
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.hq-details {
+    margin-bottom: 25px;
+}
+
+.hq-details p {
+    margin: 5px 0;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.social-links h4 {
+    margin: 0 0 15px 0;
+    font-size: 16px;
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.social-link {
+    padding: 8px 16px;
+    background: var(--accent);
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.social-link:hover {
+    background: var(--accent-dark);
+    transform: translateY(-2px);
+}
+
+.feedback-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.feedback-card {
+    padding: 25px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    text-align: center;
+}
+
+.stars {
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.feedback-card p {
+    margin: 0 0 20px 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+    font-style: italic;
+}
+
+.reviewer {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.reviewer strong {
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.reviewer span {
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .company-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .capabilities-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .applications-grid, .crops-grid, .contact-info {
+        grid-template-columns: 1fr;
+    }
+    
+    .metrics-dashboard {
+        grid-template-columns: 1fr;
+    }
+    
+    .metric-items {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .capabilities-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('themeToggle');
+    if (themeToggle) {
+        // Load saved theme (default is dark)
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-mode');
+            themeToggle.textContent = '🌙';
+        } else {
+            themeToggle.textContent = '☀️';
+        }
+        
+        themeToggle.addEventListener('click', function() {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            this.textContent = isLight ? '🌙' : '☀️';
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        });
+    }
+});
+</script>
+{% endblock %}

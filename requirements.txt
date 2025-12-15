@@ -1,0 +1,7 @@
+Flask==2.3.3
+torch
+torchvision
+opencv-python
+Pillow
+numpy
+efficientnet-pytorch

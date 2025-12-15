@@ -1,0 +1,227 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Hero Header -->
+<div class="hero-header">
+	<div class="hero-nav">
+		<div class="hero-brand">
+			<div class="hero-logo">🍏</div>
+			<span>FreshGuard</span>
+		</div>
+		<button class="mobile-nav-toggle" id="mobileNavToggle">☰</button>
+		<nav class="hero-menu" id="heroMenu">
+			<a href="/">Home</a>
+			<a href="/dashboard">Dashboard</a>
+			<a href="/analyze">Analyze</a>
+			<a href="/live-detection">Live Detection</a>
+			<a href="/history">History</a>
+			<a href="/about">About</a>
+			<span class="hero-icon">🌙</span>
+		</nav>
+	</div>
+	<div class="hero-content">
+		<h1>HEALTHY FRESH</h1>
+		<p>AI-powered fruit & vegetable quality inspection</p>
+	</div>
+</div>
+
+<!-- Main Upload Section -->
+<section class="main-upload-section">
+	<div class="upload-card-container">
+		<div class="upload-image-side">
+			<img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=600&h=400&fit=crop" alt="Fresh vegetables" />
+			<div class="ai-badge">AI-Powered</div>
+		</div>
+		<div class="upload-content-side">
+			<h3>Upload your item</h3>
+			<p>We will enhance the image, detect edges, and analyze with EfficientNet to spot fungal infections.</p>
+			
+			<form id="uploadForm" action="/predict" method="post" enctype="multipart/form-data">
+				<input type="file" id="fileInput" name="file" accept="image/*" required style="display: none;" />
+				<div class="upload-buttons">
+					<button type="button" class="select-btn" onclick="document.getElementById('fileInput').click()">Select an Image</button>
+					<button type="submit" class="analyze-btn">Analyze</button>
+				</div>
+			</form>
+			
+			<p class="supported-formats">Supported: JPG, PNG, JPEG, WEBP, BMP</p>
+		</div>
+	</div>
+</section>
+
+<!-- Live Camera Section -->
+<section class="live-camera-section">
+	<div class="camera-card">
+		<div class="camera-left">
+			<div class="camera-image">
+				<img src="https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=600&h=400&fit=crop" alt="Potatoes" />
+				<div class="live-badge">LIVE</div>
+			</div>
+		</div>
+		<div class="camera-right">
+			<h3>Live Camera</h3>
+			<p>Use your device camera to capture a live frame and analyze instantly.</p>
+			
+			<div class="camera-preview-area">
+				<video id="webcam" autoplay playsinline muted style="display: none;"></video>
+				<canvas id="snapshot" class="hidden"></canvas>
+				<div id="detectionBoxes"></div>
+				<div class="preview-text">
+					<p>Camera preview will appear here</p>
+				</div>
+			</div>
+			
+			<div class="camera-controls">
+				<button class="btn-start" id="startCam">Start Camera</button>
+				<button class="btn-capture" id="capture" disabled>Capture</button>
+				<button class="btn-analyze" id="uploadCapture" disabled>Analyze Capture</button>
+			</div>
+			
+			<p class="hint-text">Grant camera permissions, capture a frame, then analyze</p>
+		</div>
+	</div>
+</section>
+
+
+
+<!-- Analysis Process section removed per request -->
+
+<!-- Stats Cards -->
+<section class="stats-section">
+	<div class="stats-grid">
+		<div class="stat-card">
+			<div class="stat-icon">📊</div>
+			<div class="stat-number">0</div>
+			<div class="stat-label">Total Analyses</div>
+		</div>
+		<div class="stat-card">
+			<div class="stat-icon">✅</div>
+			<div class="stat-number">0</div>
+			<div class="stat-label">Healthy Fruits</div>
+		</div>
+		<div class="stat-card">
+			<div class="stat-icon">⚠️</div>
+			<div class="stat-number">0</div>
+			<div class="stat-label">Diseased Fruits</div>
+		</div>
+		<div class="stat-card">
+			<div class="stat-icon">🎯</div>
+			<div class="stat-number">0%</div>
+			<div class="stat-label">Accuracy Rate</div>
+		</div>
+	</div>
+</section>
+
+<!-- Charts Section -->
+<section class="charts-section">
+	<div class="charts-grid">
+		<div class="chart-card">
+			<h4>Analysis Trends</h4>
+			<div class="chart-area">
+				<canvas id="trendChart"></canvas>
+				<div class="chart-placeholder">
+					<p>📈 No data available</p>
+				</div>
+			</div>
+		</div>
+		<div class="chart-card">
+			<h4>Fruit Distribution</h4>
+			<div class="chart-area">
+				<canvas id="donutChart"></canvas>
+				<div class="chart-placeholder">
+					<p>🍎 No data available</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- Recent Analyses Section -->
+<section class="recent-section">
+	<h3>Recent Analyses</h3>
+	<div class="recent-card">
+		<div class="recent-icon">📊</div>
+		<div class="recent-content">
+			<h4>No analyses yet</h4>
+			<p>Start by analyzing your first fruit image!</p>
+		</div>
+	</div>
+</section>
+
+<!-- System Status Section -->
+<section class="status-section">
+	<h3>System Status</h3>
+	<div class="status-card">
+		<div class="status-item">
+			<div class="status-dot online"></div>
+			<span>AI Model: Online</span>
+		</div>
+		<div class="status-item">
+			<div class="status-dot online"></div>
+			<span>Live Detection: Ready</span>
+		</div>
+		<div class="status-item">
+			<div class="status-dot online"></div>
+			<span>Database: Connected</span>
+		</div>
+	</div>
+</section>
+
+<!-- Mobile Overlay -->
+<div class="mobile-overlay" id="mobileOverlay"></div>
+
+<!-- Loading State -->
+<div class="loading" style="display: none;">
+    <div class="spinner"></div>
+    <p>Analyzing your image... This may take a few seconds</p>
+</div>
+
+<script>
+// Mobile Navigation Toggle
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.getElementById('mobileNavToggle');
+    const heroMenu = document.getElementById('heroMenu');
+    const mobileOverlay = document.getElementById('mobileOverlay');
+    
+    if (mobileToggle && heroMenu) {
+        mobileToggle.addEventListener('click', function() {
+            heroMenu.classList.toggle('open');
+            mobileOverlay.classList.toggle('active');
+            mobileToggle.textContent = heroMenu.classList.contains('open') ? '✕' : '☰';
+        });
+        
+        // Close menu when overlay is clicked
+        mobileOverlay.addEventListener('click', function() {
+            heroMenu.classList.remove('open');
+            mobileOverlay.classList.remove('active');
+            mobileToggle.textContent = '☰';
+        });
+        
+        // Close menu when window is resized to desktop
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                heroMenu.classList.remove('open');
+                mobileOverlay.classList.remove('active');
+                mobileToggle.textContent = '☰';
+            }
+        });
+    }
+});
+</script>
+
+<!-- Results Section -->
+<section id="results" class="result-section" style="display: none;">
+    <div class="container">
+        <div class="result-content">
+            <!-- Results will be dynamically inserted here -->
+        </div>
+        <!-- Text-to-Speech Button -->
+        <div class="tts-controls" style="text-align: center; margin-top: 20px;">
+            <button id="speakButton" class="btn" style="display: none;">🔊 Speak Results</button>
+        </div>
+        <div class="actions">
+            <a class="btn" href="/dashboard">Back to Dashboard</a>
+            <a class="btn" href="/analyze">Analyze Another</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

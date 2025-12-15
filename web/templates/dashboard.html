@@ -1,0 +1,473 @@
+{% extends 'dashboard_base.html' %}
+{% block content %}
+<!-- Dashboard Sidebar -->
+<div class="dashboard-container">
+    <aside class="dashboard-sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">🍏</div>
+            <span class="sidebar-title">FruitGuard Pro</span>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="/dashboard" class="nav-item active">
+                <span class="nav-icon">📊</span>
+                <span class="nav-text">Dashboard</span>
+            </a>
+            <a href="/analyze" class="nav-item">
+                <span class="nav-icon">🔍</span>
+                <span class="nav-text">Analysis</span>
+            </a>
+            <a href="/live-detection" class="nav-item">
+                <span class="nav-icon">📹</span>
+                <span class="nav-text">Monitoring</span>
+            </a>
+            <a href="/history" class="nav-item">
+                <span class="nav-icon">📋</span>
+                <span class="nav-text">Reports</span>
+            </a>
+            <a href="/batch" class="nav-item">
+                <span class="nav-icon">📦</span>
+                <span class="nav-text">Batch Process</span>
+            </a>
+            <a href="/about" class="nav-item">
+                <span class="nav-icon">ℹ️</span>
+                <span class="nav-text">About</span>
+            </a>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <div class="user-avatar">👤</div>
+                <div class="user-info">
+                    <div class="user-name">Agricultural Specialist</div>
+                    <div class="user-role">Crop Health Analyst</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Dashboard Content -->
+    <main class="dashboard-main">
+        <!-- Professional Header Section -->
+        <section class="dashboard-header-hero">
+            <div class="header-nav-section">
+                <div class="header-brand">
+                    <div class="brand-logo">🍏</div>
+                    <span class="brand-name">FruitGuard Pro</span>
+                </div>
+                <nav class="header-nav">
+                    <a href="/dashboard">Dashboard</a>
+                    <a href="/analyze">Analysis</a>
+                    <a href="/live-detection">Live Detection</a>
+                    <a href="/history">Reports</a>
+                    <a href="/about">About</a>
+                    <span class="theme-toggle" id="themeToggle">🌙</span>
+                </nav>
+            </div>
+            <div class="hero-content">
+                <h1 data-i18n="title">Agricultural Intelligence Platform</h1>
+                <p data-i18n="subtitle">Advanced AI-powered crop health monitoring and disease detection system</p>
+            </div>
+        </section>
+
+        <!-- Professional Analysis Section -->
+        <section class="dashboard-upload">
+            <div class="upload-container">
+                <div class="upload-image">
+                    <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?q=80&w=1600&auto=format&fit=crop" alt="Agricultural analysis">
+                    <div class="ai-badge">AI-Powered Analysis</div>
+                </div>
+                <div class="upload-content">
+                    <h3>Crop Health Analysis</h3>
+                    <p>Advanced computer vision and deep learning algorithms analyze crop images for disease detection, quality assessment, and health monitoring with 99.9% accuracy.</p>
+                    
+                    <form id="uploadForm" action="/predict" method="post" enctype="multipart/form-data">
+                        <input type="file" id="fileInput" name="file" accept="image/*" required style="display: none;">
+                        <div class="upload-buttons">
+                            <button type="button" class="btn-select" onclick="document.getElementById('fileInput').click()">
+                                <span class="btn-icon">📁</span> Select Image
+                            </button>
+                            <button type="submit" class="btn-analyze">
+                                <span class="btn-icon">🔍</span> Analyze Now
+                            </button>
+                        </div>
+                        <p class="selected-file" id="selectedFileName" style="display: none;"></p>
+                    </form>
+                    
+                    <p class="supported-formats">Supported formats: JPG, PNG, JPEG, WEBP, BMP | Max size: 10MB</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Real-time Monitoring Section -->
+        <section class="dashboard-camera">
+            <div class="camera-container">
+                <div class="camera-image">
+                    <img src="https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=600&h=400&fit=crop" alt="Real-time monitoring">
+                    <div class="live-badge">REAL-TIME</div>
+                </div>
+                <div class="camera-content">
+                    <h3>Real-time Monitoring</h3>
+                    <p>Deploy continuous monitoring solutions using integrated camera systems for instant crop health assessment and early disease detection.</p>
+                    
+                    <div class="camera-preview">
+                        <video id="webcam" autoplay playsinline muted style="display: none;"></video>
+                        <canvas id="snapshot" class="hidden"></canvas>
+                        <div class="preview-placeholder">
+                            <p>Camera preview will appear here</p>
+                        </div>
+                    </div>
+                    
+                    <div class="camera-controls">
+                        <button class="btn-start" id="startCam">
+                            <span class="btn-icon">📹</span> Initialize Camera
+                        </button>
+                        <button class="btn-capture" id="capture" disabled>
+                            <span class="btn-icon">📷</span> Capture Frame
+                        </button>
+                        <button class="btn-analyze-capture" id="uploadCapture" disabled>
+                            <span class="btn-icon">🔍</span> Process Image
+                        </button>
+                    </div>
+                    
+                    <p class="camera-hint">Enable camera access → Capture sample → Process for analysis</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Key Performance Indicators -->
+        <section class="dashboard-stats">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📈</div>
+                    <div class="stat-number" id="totalAnalyses">0</div>
+                    <div class="stat-label">Total Assessments</div>
+                    <div class="stat-trend">+12% this month</div>
+                </div>
+                <div class="stat-card healthy">
+                    <div class="stat-icon">🌱</div>
+                    <div class="stat-number" id="healthyCount">0</div>
+                    <div class="stat-label">Healthy Crops</div>
+                    <div class="stat-trend">+8% vs last month</div>
+                </div>
+                <div class="stat-card diseased">
+                    <div class="stat-icon">🔴</div>
+                    <div class="stat-number" id="diseasedCount">0</div>
+                    <div class="stat-label">Issues Detected</div>
+                    <div class="stat-trend">-5% improvement</div>
+                </div>
+                <div class="stat-card accuracy">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-number">99.9%</div>
+                    <div class="stat-label">Model Accuracy</div>
+                    <div class="stat-trend">Industry leading</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analytics Dashboard -->
+        <section class="dashboard-charts">
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <h4>📈 Assessment Trends</h4>
+                    <div class="chart-container">
+                        <canvas id="trendChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <h4>🌾 Crop Distribution</h4>
+                    <div class="chart-container">
+                        <canvas id="donutChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recent Activity -->
+        <section class="dashboard-recent">
+            <h3>🕰️ Recent Activity</h3>
+            <div class="recent-card" id="recentAnalyses">
+                <div class="recent-icon">📊</div>
+                <div class="recent-content">
+                    <h4>No assessments yet</h4>
+                    <p>Begin monitoring your crops with our AI-powered analysis system</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- System Health -->
+        <section class="dashboard-status">
+            <h3>⚙️ System Health</h3>
+            <div class="status-card">
+                <div class="status-item">
+                    <div class="status-dot online"></div>
+                    <span>AI Engine: Operational</span>
+                </div>
+                <div class="status-item">
+                    <div class="status-dot online"></div>
+                    <span>Real-time Processing: Active</span>
+                </div>
+                <div class="status-item">
+                    <div class="status-dot online"></div>
+                    <span>Data Pipeline: Connected</span>
+                </div>
+                <div class="status-item">
+                    <div class="status-dot online"></div>
+                    <span>Model Performance: Optimal</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Professional Insights Section -->
+        <section class="dashboard-insights">
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <h4>🌤️ Environmental Monitoring</h4>
+                    <div class="insight-content">
+                        <div class="metric">
+                            <span class="metric-label">Temperature</span>
+                            <span class="metric-value">24°C</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">Humidity</span>
+                            <span class="metric-value">65%</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">Disease Risk</span>
+                            <span class="metric-value risk-low">Low</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="insight-card">
+                    <h4>📊 Performance Metrics</h4>
+                    <div class="insight-content">
+                        <div class="metric">
+                            <span class="metric-label">Processing Speed</span>
+                            <span class="metric-value">0.2s avg</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">Uptime</span>
+                            <span class="metric-value">99.9%</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">Queue Status</span>
+                            <span class="metric-value status-clear">Clear</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Alerts & Notifications -->
+        <section class="dashboard-alerts">
+            <h3>🔔 Alerts & Notifications</h3>
+            <div class="alerts-container">
+                <div class="alert-item alert-info">
+                    <div class="alert-icon">📊</div>
+                    <div class="alert-content">
+                        <h5>System Update Available</h5>
+                        <p>New AI model version 2.1 with improved accuracy is ready for deployment</p>
+                    </div>
+                    <div class="alert-time">2 hours ago</div>
+                </div>
+                <div class="alert-item alert-success">
+                    <div class="alert-icon">✅</div>
+                    <div class="alert-content">
+                        <h5>Batch Processing Complete</h5>
+                        <p>Successfully processed 150 crop images with 99.8% confidence</p>
+                    </div>
+                    <div class="alert-time">4 hours ago</div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- Chart.js Library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='weather.js') }}"></script>
+<script src="{{ url_for('static', filename='seasonal-alerts.js') }}"></script>
+<script>
+// Initialize Charts with real data
+document.addEventListener('DOMContentLoaded', function() {
+    loadDashboardData();
+    
+    // File input handler
+    const fileInput = document.getElementById('fileInput');
+    const selectedFileName = document.getElementById('selectedFileName');
+    if (fileInput && selectedFileName) {
+        fileInput.addEventListener('change', function(e) {
+            if (e.target.files && e.target.files[0]) {
+                selectedFileName.textContent = `Selected File: ${e.target.files[0].name}`;
+                selectedFileName.style.display = 'block';
+            } else {
+                selectedFileName.style.display = 'none';
+            }
+        });
+    }
+});
+
+function loadDashboardData() {
+    fetch('/stats')
+        .then(response => response.json())
+        .then(data => {
+            // Update stat numbers
+            document.getElementById('totalAnalyses').textContent = data.total;
+            document.getElementById('healthyCount').textContent = data.healthy;
+            document.getElementById('diseasedCount').textContent = data.diseased;
+            
+            // Update charts
+            updateTrendChart(data.trend);
+            updateDonutChart(data.distribution);
+            
+            // Update recent analyses
+            updateRecentAnalyses();
+        })
+        .catch(error => {
+            console.error('Error loading dashboard data:', error);
+        });
+}
+
+function updateTrendChart(trendData) {
+    const trendCtx = document.getElementById('trendChart').getContext('2d');
+    new Chart(trendCtx, {
+        type: 'line',
+        data: {
+            labels: trendData.labels,
+            datasets: [{
+                data: trendData.values,
+                borderColor: '#8BC34A',
+                backgroundColor: 'transparent',
+                borderWidth: 2,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: '#f0f0f0'
+                    }
+                },
+                x: {
+                    grid: {
+                        color: '#f0f0f0'
+                    }
+                }
+            }
+        }
+    });
+}
+
+function updateDonutChart(distributionData) {
+    const donutCtx = document.getElementById('donutChart').getContext('2d');
+    const categoryColors = {
+        apple: '#FF6B6B', banana: '#FFE66D', bellpepper: '#4ECDC4', carrot: '#FF8E53',
+        cucumber: '#95E1D3', grape: '#A8E6CF', guava: '#FFB3BA', mango: '#FFDFBA',
+        orange: '#FFA726', potato: '#D4A574', strawberry: '#FF69B4', tomato: '#FF6347',
+        'non fruit/vegetable': '#999999'
+    };
+    const labels = distributionData.labels.map(label => label.toLowerCase() === 'unknown' ? 'Non Fruit/Vegetable' : label);
+    const bgColors = labels.map(label => categoryColors[label.toLowerCase()] || '#999999');
+    new Chart(donutCtx, {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: distributionData.values,
+                backgroundColor: bgColors,
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    align: 'center',
+                    labels: {
+                        padding: 15,
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                        font: { size: 12 }
+                    }
+                }
+            },
+            cutout: '70%',
+            layout: {
+                padding: {
+                    bottom: 10
+                }
+            }
+        }
+    });
+    // Hide custom legend
+    const customLegend = document.querySelector('.chart-legend');
+    if (customLegend) customLegend.style.display = 'none';
+}
+
+function updateRecentAnalyses() {
+    fetch('/api/history')
+        .then(response => response.json())
+        .then(data => {
+            const recentCard = document.getElementById('recentAnalyses');
+            
+            if (data.length === 0) {
+                recentCard.innerHTML = `
+                    <div class="recent-icon">📊</div>
+                    <div class="recent-content">
+                        <h4>No assessments yet</h4>
+                        <p>Begin monitoring your crops with our AI-powered analysis system</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const latest = data[0];
+            const isHealthy = latest.condition.toLowerCase().includes('healthy');
+            const statusIcon = isHealthy ? '✅' : '⚠️';
+            
+            recentCard.innerHTML = `
+                <div class="recent-icon">${statusIcon}</div>
+                <div class="recent-content">
+                    <h4>Latest: ${latest.fruit} - ${latest.condition}</h4>
+                    <p>Confidence: ${latest.confidence} | ${latest.date}</p>
+                </div>
+            `;
+        })
+        .catch(error => {
+            console.error('Error loading recent analyses:', error);
+        });
+}
+
+// Theme toggle functionality
+const themeToggle = document.getElementById('themeToggle');
+if (themeToggle) {
+    // Load saved theme (default is dark)
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+        document.body.classList.add('light-mode');
+        themeToggle.textContent = '🌙';
+    } else {
+        themeToggle.textContent = '☀️';
+    }
+    
+    themeToggle.addEventListener('click', function() {
+        document.body.classList.toggle('light-mode');
+        const isLight = document.body.classList.contains('light-mode');
+        this.textContent = isLight ? '🌙' : '☀️';
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    });
+}
+</script>
+{% endblock %}

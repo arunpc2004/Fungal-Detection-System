@@ -1,0 +1,187 @@
+/* Feedback Widget Styles */
+.feedback-widget {
+    position: relative;
+    margin-top: 20px;
+}
+
+.feedback-toggle {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    transition: all 0.3s ease;
+}
+
+.feedback-toggle:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+}
+
+.feedback-panel {
+    position: absolute;
+    bottom: 60px;
+    right: 0;
+    width: 350px;
+    background: var(--card);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    padding: 20px;
+    z-index: 100;
+}
+
+.feedback-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(255,255,255,0.1);
+}
+
+.feedback-header h4 {
+    margin: 0;
+    color: var(--ink);
+    font-size: 16px;
+}
+
+.feedback-header button {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+}
+
+.rating-section, .report-section, .suggest-section {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.rating-section:last-child, .report-section:last-child, .suggest-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.stars {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.star {
+    font-size: 28px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    filter: grayscale(100%);
+    opacity: 0.5;
+}
+
+.star:hover, .star.selected {
+    transform: scale(1.2);
+    filter: grayscale(0%);
+    opacity: 1;
+}
+
+.feedback-panel textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.05);
+    color: var(--ink);
+    font-size: 14px;
+    margin-bottom: 10px;
+    resize: vertical;
+}
+
+.feedback-panel select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.05);
+    color: var(--ink);
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.feedback-panel input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.05);
+    color: var(--ink);
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.feedback-panel button[type="button"],
+.feedback-panel button[onclick] {
+    width: 100%;
+    padding: 10px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.feedback-panel button:hover {
+    background: var(--accent-dark);
+}
+
+.report-section h4, .suggest-section h4 {
+    margin: 0 0 15px 0;
+    color: var(--ink);
+    font-size: 14px;
+}
+
+.feedback-toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #4CAF50;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    z-index: 1000;
+    animation: slideInUp 0.3s ease;
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .feedback-panel {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        width: 100%;
+        border-radius: 16px 16px 0 0;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+}

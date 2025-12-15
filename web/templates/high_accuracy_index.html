@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="analyze-page">
+    <div class="analyze-container">
+        <div class="analyze-header">
+            <span class="analyze-icon">🔍</span>
+            <h2>Upload Image for Analysis</h2>
+        </div>
+        <p class="analyze-subtitle">Upload a fruit or vegetable image to detect diseases and health status</p>
+        
+        <div class="analyze-dropzone">
+            <div class="folder-icon">📁</div>
+            <h3>Drag & Drop your image here</h3>
+            <p>or click to browse files</p>
+            
+            <form id="uploadForm" action="/predict" method="post" enctype="multipart/form-data">
+                <input type="file" id="fileInput" name="file" accept="image/*" required style="display: none;" />
+                <button type="button" class="browse-files-btn" onclick="document.getElementById('fileInput').click()">Browse Files</button>
+            </form>
+        </div>
+        
+        <div class="analyze-actions">
+            <button class="analyze-image-btn" type="button" onclick="document.getElementById('uploadForm').submit()">
+                <span class="btn-icon">🔍</span>
+                Analyze Image
+            </button>
+            <button class="reset-btn" type="button" onclick="resetForm()">
+                <span class="btn-icon">🔄</span>
+                Reset
+            </button>
+        </div>
+    </div>
+</section>
+
+<script>
+function resetForm() {
+    document.getElementById('fileInput').value = '';
+}
+</script>
+{% endblock %}

@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="result-section">
+    <div class="container">
+        <div class="result-content">
+            <div class="result-banner general">
+                <div class="pill general">DETECTED</div>
+                <h3>{{ main_object.title() }}</h3>
+                <p class="description">{{ description }}</p>
+                <p>Confidence: <strong>{{ confidence }}</strong></p>
+            </div>
+            
+            <div class="image-preview">
+                <img src="{{ image_url }}" alt="Analyzed image" class="result-image">
+            </div>
+            
+            {% if detected_objects %}
+            <div class="detected-objects">
+                <h4>Detected Objects:</h4>
+                <ul>
+                {% for obj in detected_objects %}
+                    <li>{{ obj.object.title() }} ({{ "%.1f"|format(obj.confidence * 100) }}%)</li>
+                {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+            
+            {% if scene_analysis %}
+            <div class="scene-details">
+                <h4>Scene Analysis:</h4>
+                <div class="analysis-grid">
+                    {% if scene_analysis.lighting %}
+                    <div class="analysis-item">
+                        <span class="label">Lighting:</span>
+                        <span class="value">{{ scene_analysis.lighting.title() }}</span>
+                    </div>
+                    {% endif %}
+                    
+                    {% if scene_analysis.complexity %}
+                    <div class="analysis-item">
+                        <span class="label">Complexity:</span>
+                        <span class="value">{{ scene_analysis.complexity.title() }}</span>
+                    </div>
+                    {% endif %}
+                    
+                    {% if scene_analysis.has_faces %}
+                    <div class="analysis-item">
+                        <span class="label">People:</span>
+                        <span class="value">{{ scene_analysis.face_count }} person(s) detected</span>
+                    </div>
+                    {% endif %}
+                    
+                    {% if scene_analysis.dominant_colors %}
+                    <div class="analysis-item">
+                        <span class="label">Colors:</span>
+                        <span class="value">{{ scene_analysis.dominant_colors|join(', ') }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+            
+            {% if previews %}
+            <div class="image-variants">
+                <h4>Image Variants:</h4>
+                <div class="variants-grid">
+                    {% if previews.sharpened %}
+                    <div class="variant">
+                        <img src="{{ url_for('uploaded_file', filename=previews.sharpened) }}" alt="Sharpened">
+                        <p>Sharpened</p>
+                    </div>
+                    {% endif %}
+                    {% if previews.blurred %}
+                    <div class="variant">
+                        <img src="{{ url_for('uploaded_file', filename=previews.blurred) }}" alt="Blurred">
+                        <p>Blurred</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="tts-controls" style="text-align: center; margin-top: 20px;">
+            <button id="speakButton" class="btn">🔊 Speak Description</button>
+        </div>
+        
+        <div class="actions">
+            <a class="btn" href="/">Analyze Another</a>
+        </div>
+    </div>
+</section>
+
+<script>
+document.getElementById('speakButton').addEventListener('click', function() {
+    let description = "{{ description }}";
+    // Clean text for voice: replace underscores with spaces, slashes with 'or'
+    description = description.replace(/_/g, ' ').replace(/\//g, ' or ');
+    if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(description);
+        utterance.lang = 'en-US';
+        utterance.rate = 1.0;
+        utterance.pitch = 1.0;
+        speechSynthesis.speak(utterance);
+    } else {
+        alert('Text-to-speech is not supported in your browser.');
+    }
+});
+</script>
+{% endblock %}

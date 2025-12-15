@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="history-container">
+    <!-- Filter Section -->
+    <div class="filter-section">
+        <div class="filter-header">
+            <span class="filter-icon">🔍</span>
+            <h3>Filter Results</h3>
+        </div>
+        
+        <div class="filter-controls">
+            <div class="filter-group">
+                <label>Fruit Type:</label>
+                <select class="filter-select">
+                    <option>All Fruits</option>
+                    <option>Apple</option>
+                    <option>Banana</option>
+                    <option>Tomato</option>
+                    <option>Potato</option>
+                    <option>Grape</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label>Health Status:</label>
+                <select class="filter-select">
+                    <option>All Status</option>
+                    <option>Healthy</option>
+                    <option>Diseased</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label>Date Range:</label>
+                <select class="filter-select">
+                    <option>All Time</option>
+                    <option>Today</option>
+                    <option>This Week</option>
+                    <option>This Month</option>
+                </select>
+            </div>
+            
+            <button class="clear-filters-btn">Clear Filters</button>
+        </div>
+    </div>
+    
+    <!-- Stats Cards -->
+    <div class="stats-row">
+        <div class="stat-card total">
+            <div class="stat-icon">📊</div>
+            <div class="stat-content">
+                <div class="stat-number">0</div>
+                <div class="stat-label">Total Analyses</div>
+            </div>
+        </div>
+        
+        <div class="stat-card healthy">
+            <div class="stat-icon">✅</div>
+            <div class="stat-content">
+                <div class="stat-number">0</div>
+                <div class="stat-label">Healthy Results</div>
+            </div>
+        </div>
+        
+        <div class="stat-card diseased">
+            <div class="stat-icon">⚠️</div>
+            <div class="stat-content">
+                <div class="stat-number">0</div>
+                <div class="stat-label">Diseased Results</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Analysis History -->
+    <div class="history-section">
+        <div class="history-header">
+            <div class="history-title">
+                <span class="history-icon">📋</span>
+                <h3>Analysis History</h3>
+            </div>
+            
+            <div class="history-actions">
+                <button class="export-btn">
+                    <span class="btn-icon">⬇️</span>
+                    Export
+                </button>
+                <button class="clear-all-btn">
+                    <span class="btn-icon">🗑️</span>
+                    Clear All
+                </button>
+            </div>
+        </div>
+        
+        <div class="history-list">
+            <div class="empty-state">
+                <div class="empty-icon">📊</div>
+                <h4>No Analysis History</h4>
+                <p>Start analyzing fruits to see your history here</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

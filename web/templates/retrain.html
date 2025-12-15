@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="results-section">
+    <div class="container">
+        <div class="result-large">
+            <div class="result-banner safe large">
+                <div class="pill">CORRECTION SAVED</div>
+                <div class="result-main">
+                    <h3>Image Added to Training Data</h3>
+                    <p>Your correction has been saved to the {{ fruit.title() }} dataset.</p>
+                    <p>To improve future predictions, retrain the model with the updated data.</p>
+                </div>
+            </div>
+
+            <div class="result-actions" style="margin-top: 18px; text-align: center;">
+                <a class="btn" href="/">Analyze Another</a>
+                <a class="btn" href="{{ url_for('retrain_model', fruit=fruit) }}" style="background: #28a745;">🔄 Retrain {{ fruit.title() }} Model</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

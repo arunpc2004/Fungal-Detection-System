@@ -1,0 +1,447 @@
+{% extends 'dashboard_base.html' %}
+{% block content %}
+<!-- Dashboard Sidebar -->
+<div class="dashboard-container">
+    <aside class="dashboard-sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">🍏</div>
+            <span class="sidebar-title">FruitGuard</span>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="/dashboard" class="nav-item">
+                <span class="nav-icon">📊</span>
+                <span class="nav-text">Dashboard</span>
+            </a>
+            <a href="/analyze" class="nav-item">
+                <span class="nav-icon">🔍</span>
+                <span class="nav-text">Analyze</span>
+            </a>
+            <a href="/live-detection" class="nav-item active">
+                <span class="nav-icon">📹</span>
+                <span class="nav-text">Live Detection</span>
+            </a>
+            <a href="/history" class="nav-item">
+                <span class="nav-icon">📋</span>
+                <span class="nav-text">History</span>
+            </a>
+            <a href="/batch" class="nav-item">
+                <span class="nav-icon">📦</span>
+                <span class="nav-text">Batch Upload</span>
+            </a>
+            <a href="/about" class="nav-item">
+                <span class="nav-icon">ℹ️</span>
+                <span class="nav-text">About</span>
+            </a>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <div class="user-avatar">👤</div>
+                <div class="user-info">
+                    <div class="user-name">AI User</div>
+                    <div class="user-role">Analyst</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+        <!-- Combined Header Section -->
+        <section class="dashboard-header-hero">
+            <div class="header-nav-section">
+                <div class="header-brand">
+                    <div class="brand-logo">🍏</div>
+                    <span class="brand-name">FreshGuard</span>
+                </div>
+                <nav class="header-nav">
+                    <a href="/dashboard">Home</a>
+                    <a href="/analyze">Analyze</a>
+                    <a href="/live-detection">Live Detection</a>
+                    <a href="/history">History</a>
+                    <a href="/about">About</a>
+                    <span class="theme-toggle" id="themeToggle">🌙</span>
+                </nav>
+            </div>
+            <div class="hero-content">
+                <h1>HEALTHY FRESH</h1>
+                <p>AI-powered fruit & vegetable quality inspection</p>
+            </div>
+        </section>
+        
+        <div style="background: white; border-radius: 24px; padding: 50px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); margin-bottom: 40px;">
+            <div style="text-align: center; margin-bottom: 40px;">
+                <div style="display: inline-flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                    <span style="font-size: 48px;">📹</span>
+                    <h2 style="margin: 0; font-size: 36px; font-weight: 700; color: #1a1a1a;">Live Fruit Detection</h2>
+                </div>
+                <p style="color: #666; font-size: 18px; margin: 0;">Real-time AI-powered fruit and disease detection using your camera</p>
+            </div>
+            
+            <div style="position: relative; background: #000; border-radius: 20px; overflow: hidden; min-height: 500px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(0,0,0,0.2); margin-bottom: 30px;">
+                <video id="webcam" autoplay playsinline muted style="display: none; width: 100%; height: 100%; object-fit: cover;"></video>
+                <canvas id="snapshot" class="hidden"></canvas>
+                <div id="detectionBoxes" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10;"></div>
+                <div id="cameraPlaceholder" style="color: #fff; text-align: center;">
+                    <div style="font-size: 64px; margin-bottom: 20px; opacity: 0.7;">📷</div>
+                    <p style="font-size: 20px; font-weight: 600; margin: 0;">Camera will appear here once started</p>
+                    <p style="font-size: 16px; margin-top: 10px; opacity: 0.8;">Click "Start Camera" below to begin</p>
+                </div>
+                <div id="liveDescription" style="display: none; position: absolute; bottom: 20px; left: 20px; right: 20px; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); padding: 20px; border-radius: 12px; z-index: 20;">
+                    <p id="detectionText" style="margin: 0; font-size: 18px; font-weight: 600; color: white; text-align: center;">Point camera at fruits or vegetables</p>
+                </div>
+            </div>
+            
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button id="startCamera" style="background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: white; border: none; padding: 16px 32px; border-radius: 12px; font-weight: 600; font-size: 16px; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 4px 12px rgba(22,163,74,0.3); transition: all 0.3s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(22,163,74,0.4)'" onmouseout="this.style.transform=''; this.style.boxShadow='0 4px 12px rgba(22,163,74,0.3)'">
+                    <span style="font-size: 20px;">📹</span> Start Camera
+                </button>
+                <button id="startDetection" disabled style="background: #3b82f6; color: white; border: none; padding: 16px 32px; border-radius: 12px; font-weight: 600; font-size: 16px; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 4px 12px rgba(59,130,246,0.3); transition: all 0.3s;" onmouseover="if(!this.disabled) { this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(59,130,246,0.4)' }" onmouseout="this.style.transform=''; this.style.boxShadow='0 4px 12px rgba(59,130,246,0.3)'">
+                    <span style="font-size: 20px;">🔍</span> Start Detection
+                </button>
+                <button id="captureBtn" disabled style="background: #f59e0b; color: white; border: none; padding: 16px 32px; border-radius: 12px; font-weight: 600; font-size: 16px; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 4px 12px rgba(245,158,11,0.3); transition: all 0.3s;" onmouseover="if(!this.disabled) { this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(245,158,11,0.4)' }" onmouseout="this.style.transform=''; this.style.boxShadow='0 4px 12px rgba(245,158,11,0.3)'">
+                    <span style="font-size: 20px;">📸</span> Capture
+                </button>
+                <button id="analyzeBtn" disabled style="background: #8b5cf6; color: white; border: none; padding: 16px 32px; border-radius: 12px; font-weight: 600; font-size: 16px; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 4px 12px rgba(139,92,246,0.3); transition: all 0.3s;" onmouseover="if(!this.disabled) { this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(139,92,246,0.4)' }" onmouseout="this.style.transform=''; this.style.boxShadow='0 4px 12px rgba(139,92,246,0.3)'">
+                    <span style="font-size: 20px;">🔬</span> Analyze
+                </button>
+                <button id="stopCamera" disabled style="background: #ef4444; color: white; border: none; padding: 16px 32px; border-radius: 12px; font-weight: 600; font-size: 16px; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 4px 12px rgba(239,68,68,0.3); transition: all 0.3s;" onmouseover="if(!this.disabled) { this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(239,68,68,0.4)' }" onmouseout="this.style.transform=''; this.style.boxShadow='0 4px 12px rgba(239,68,68,0.3)'">
+                    <span style="font-size: 20px;">⏹️</span> Stop
+                </button>
+            </div>
+        </div>
+
+        <div style="background: white; border-radius: 24px; padding: 50px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); margin-bottom: 40px;">
+            <div style="text-align: center; margin-bottom: 40px;">
+                <h3 style="font-size: 32px; font-weight: 700; color: #1a1a1a; margin: 0 0 15px 0;">📋 How to Use Live Detection</h3>
+                <p style="color: #666; font-size: 16px; margin: 0;">Follow these simple steps to start detecting fruits in real-time</p>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 25px;">
+                <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-radius: 16px; padding: 30px; text-align: center; border: 2px solid #3b82f6; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform=''">
+                    <div style="width: 50px; height: 50px; background: #3b82f6; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 700; margin: 0 auto 15px;">1</div>
+                    <h4 style="margin: 0 0 10px 0; font-size: 18px; color: #1a1a1a; font-weight: 600;">Start Camera</h4>
+                    <p style="margin: 0; color: #666; font-size: 14px; line-height: 1.5;">Click "Start Camera" to access your device's camera</p>
+                </div>
+                <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border-radius: 16px; padding: 30px; text-align: center; border: 2px solid #16a34a; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform=''">
+                    <div style="width: 50px; height: 50px; background: #16a34a; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 700; margin: 0 auto 15px;">2</div>
+                    <h4 style="margin: 0 0 10px 0; font-size: 18px; color: #1a1a1a; font-weight: 600;">Begin Detection</h4>
+                    <p style="margin: 0; color: #666; font-size: 14px; line-height: 1.5;">Click "Start Detection" to enable real-time analysis</p>
+                </div>
+                <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 16px; padding: 30px; text-align: center; border: 2px solid #f59e0b; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform=''">
+                    <div style="width: 50px; height: 50px; background: #f59e0b; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 700; margin: 0 auto 15px;">3</div>
+                    <h4 style="margin: 0 0 10px 0; font-size: 18px; color: #1a1a1a; font-weight: 600;">Point at Fruit</h4>
+                    <p style="margin: 0; color: #666; font-size: 14px; line-height: 1.5;">Aim your camera at fruits or vegetables for instant analysis</p>
+                </div>
+                <div style="background: linear-gradient(135deg, #fae8ff 0%, #f3e8ff 100%); border-radius: 16px; padding: 30px; text-align: center; border: 2px solid #8b5cf6; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform=''">
+                    <div style="width: 50px; height: 50px; background: #8b5cf6; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 700; margin: 0 auto 15px;">4</div>
+                    <h4 style="margin: 0 0 10px 0; font-size: 18px; color: #1a1a1a; font-weight: 600;">Analyze Frame</h4>
+                    <p style="margin: 0; color: #666; font-size: 14px; line-height: 1.5;">Click "Analyze" for detailed analysis of the current frame</p>
+                </div>
+                <div style="background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); border-radius: 16px; padding: 30px; text-align: center; border: 2px solid #ef4444; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform=''">
+                    <div style="width: 50px; height: 50px; background: #ef4444; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 700; margin: 0 auto 15px;">5</div>
+                    <h4 style="margin: 0 0 10px 0; font-size: 18px; color: #1a1a1a; font-weight: 600;">Capture Results</h4>
+                    <p style="margin: 0; color: #666; font-size: 14px; line-height: 1.5;">Use "Capture" to save interesting detections for later review</p>
+                </div>
+            </div>
+        </div>
+
+        <div style="background: white; border-radius: 24px; padding: 50px; box-shadow: 0 10px 40px rgba(0,0,0,0.08);">
+            <div style="text-align: center; margin-bottom: 40px;">
+                <h3 style="font-size: 32px; font-weight: 700; color: #1a1a1a; margin: 0 0 15px 0;">⭐ Live Detection Features</h3>
+                <p style="color: #666; font-size: 16px; margin: 0;">Powerful AI capabilities at your fingertips</p>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px;">
+                <div style="background: #f8f9fa; border-radius: 16px; padding: 30px; text-align: center; transition: all 0.3s; border: 2px solid transparent;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#3b82f6'; this.style.boxShadow='0 8px 20px rgba(59,130,246,0.2)'" onmouseout="this.style.transform=''; this.style.borderColor='transparent'; this.style.boxShadow=''">
+                    <div style="font-size: 48px; margin-bottom: 15px;">🔍</div>
+                    <h4 style="margin: 0 0 10px 0; font-size: 18px; color: #1a1a1a; font-weight: 600;">Real-time Analysis</h4>
+                    <p style="margin: 0; color: #666; font-size: 14px; line-height: 1.5;">Instant fruit identification and health assessment</p>
+                </div>
+                <div style="background: #f8f9fa; border-radius: 16px; padding: 30px; text-align: center; transition: all 0.3s; border: 2px solid transparent;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#16a34a'; this.style.boxShadow='0 8px 20px rgba(22,163,74,0.2)'" onmouseout="this.style.transform=''; this.style.borderColor='transparent'; this.style.boxShadow=''">
+                    <div style="font-size: 48px; margin-bottom: 15px;">📊</div>
+                    <h4 style="margin: 0 0 10px 0; font-size: 18px; color: #1a1a1a; font-weight: 600;">Confidence Scoring</h4>
+                    <p style="margin: 0; color: #666; font-size: 14px; line-height: 1.5;">Live confidence scores for each detection</p>
+                </div>
+                <div style="background: #f8f9fa; border-radius: 16px; padding: 30px; text-align: center; transition: all 0.3s; border: 2px solid transparent;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#f59e0b'; this.style.boxShadow='0 8px 20px rgba(245,158,11,0.2)'" onmouseout="this.style.transform=''; this.style.borderColor='transparent'; this.style.boxShadow=''">
+                    <div style="font-size: 48px; margin-bottom: 15px;">🎯</div>
+                    <h4 style="margin: 0 0 10px 0; font-size: 18px; color: #1a1a1a; font-weight: 600;">Bounding Boxes</h4>
+                    <p style="margin: 0; color: #666; font-size: 14px; line-height: 1.5;">Visual indicators showing detected objects</p>
+                </div>
+                <div style="background: #f8f9fa; border-radius: 16px; padding: 30px; text-align: center; transition: all 0.3s; border: 2px solid transparent;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#8b5cf6'; this.style.boxShadow='0 8px 20px rgba(139,92,246,0.2)'" onmouseout="this.style.transform=''; this.style.borderColor='transparent'; this.style.boxShadow=''">
+                    <div style="font-size: 48px; margin-bottom: 15px;">🔬</div>
+                    <h4 style="margin: 0 0 10px 0; font-size: 18px; color: #1a1a1a; font-weight: 600;">Instant Analysis</h4>
+                    <p style="margin: 0; color: #666; font-size: 14px; line-height: 1.5;">Get detailed analysis results of the current frame</p>
+                </div>
+                <div style="background: #f8f9fa; border-radius: 16px; padding: 30px; text-align: center; transition: all 0.3s; border: 2px solid transparent;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#ef4444'; this.style.boxShadow='0 8px 20px rgba(239,68,68,0.2)'" onmouseout="this.style.transform=''; this.style.borderColor='transparent'; this.style.boxShadow=''">
+                    <div style="font-size: 48px; margin-bottom: 15px;">💾</div>
+                    <h4 style="margin: 0 0 10px 0; font-size: 18px; color: #1a1a1a; font-weight: 600;">Capture & Save</h4>
+                    <p style="margin: 0; color: #666; font-size: 14px; line-height: 1.5;">Save interesting detections for later analysis</p>
+                </div>
+            </div>
+        </div>
+        </div>
+    </main>
+</div>
+
+<script>
+let webcam = null;
+let isDetecting = false;
+let detectionInterval = null;
+
+document.addEventListener('DOMContentLoaded', function() {
+    const startCameraBtn = document.getElementById('startCamera');
+    const startDetectionBtn = document.getElementById('startDetection');
+    const captureBtn = document.getElementById('captureBtn');
+    const analyzeBtn = document.getElementById('analyzeBtn');
+    const stopBtn = document.getElementById('stopCamera');
+    const webcamElement = document.getElementById('webcam');
+    const placeholder = document.getElementById('cameraPlaceholder');
+    const liveDescription = document.getElementById('liveDescription');
+    const detectionText = document.getElementById('detectionText');
+
+    startCameraBtn.addEventListener('click', async function() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ 
+                video: { width: 640, height: 480 } 
+            });
+            
+            webcamElement.srcObject = stream;
+            webcamElement.style.display = 'block';
+            placeholder.style.display = 'none';
+            liveDescription.style.display = 'block';
+            
+            startCameraBtn.disabled = true;
+            startDetectionBtn.disabled = false;
+            analyzeBtn.disabled = false;
+            stopBtn.disabled = false;
+            
+            webcam = stream;
+        } catch (error) {
+            alert('Camera access denied or not available');
+            console.error('Camera error:', error);
+        }
+    });
+
+    startDetectionBtn.addEventListener('click', function() {
+        if (!isDetecting) {
+            isDetecting = true;
+            startDetectionBtn.textContent = '⏸️ Pause Detection';
+            captureBtn.disabled = false;
+            
+            // Start detection loop with faster interval
+            detectionInterval = setInterval(performDetection, 1200);
+        } else {
+            isDetecting = false;
+            startDetectionBtn.innerHTML = '<span class="btn-icon">🔍</span> Start Detection';
+            clearInterval(detectionInterval);
+        }
+    });
+
+    captureBtn.addEventListener('click', function() {
+        captureFrame();
+    });
+
+    analyzeBtn.addEventListener('click', function() {
+        analyzeCurrentFrame();
+    });
+
+    stopBtn.addEventListener('click', function() {
+        if (webcam) {
+            webcam.getTracks().forEach(track => track.stop());
+            webcamElement.style.display = 'none';
+            placeholder.style.display = 'block';
+            liveDescription.style.display = 'none';
+            
+            startCameraBtn.disabled = false;
+            startDetectionBtn.disabled = true;
+            captureBtn.disabled = true;
+            analyzeBtn.disabled = true;
+            stopBtn.disabled = true;
+            
+            isDetecting = false;
+            clearInterval(detectionInterval);
+            webcam = null;
+        }
+    });
+
+    async function performDetection() {
+        if (!webcam || !isDetecting) return;
+        
+        try {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = webcamElement.videoWidth;
+            canvas.height = webcamElement.videoHeight;
+            ctx.drawImage(webcamElement, 0, 0);
+            
+            canvas.toBlob(async (blob) => {
+                const formData = new FormData();
+                formData.append('file', blob, 'capture.jpg');
+                
+                try {
+                    const response = await fetch('/live_detect', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        detectionText.textContent = result.description;
+                        
+                        // Clear previous detection boxes
+                        const detectionBoxes = document.getElementById('detectionBoxes');
+                        detectionBoxes.innerHTML = '';
+                        
+                        // Draw detection boxes
+                        if (result.objects && result.objects.length > 0) {
+                            result.objects.forEach(obj => {
+                                const box = document.createElement('div');
+                                box.className = 'detection-box';
+                                box.style.cssText = `
+                                    position: absolute;
+                                    border: 3px solid #4CAF50;
+                                    background: rgba(76, 175, 80, 0.1);
+                                    border-radius: 4px;
+                                    left: ${obj.bbox[0]}px;
+                                    top: ${obj.bbox[1]}px;
+                                    width: ${obj.bbox[2] - obj.bbox[0]}px;
+                                    height: ${obj.bbox[3] - obj.bbox[1]}px;
+                                    pointer-events: none;
+                                    z-index: 10;
+                                `;
+                                
+                                // Add label
+                                const label = document.createElement('div');
+                                label.style.cssText = `
+                                    position: absolute;
+                                    top: -25px;
+                                    left: 0;
+                                    background: #4CAF50;
+                                    color: white;
+                                    padding: 2px 8px;
+                                    border-radius: 3px;
+                                    font-size: 12px;
+                                    font-weight: bold;
+                                    white-space: nowrap;
+                                `;
+                                label.textContent = `${obj.object} (${Math.round(obj.confidence * 100)}%)`;
+                                box.appendChild(label);
+                                
+                                detectionBoxes.appendChild(box);
+                            });
+                        }
+                        
+                        // Text-to-speech for important detections
+                        if (result.should_speak && 'speechSynthesis' in window) {
+                            const utterance = new SpeechSynthesisUtterance(result.description);
+                            utterance.rate = 0.8;
+                            utterance.volume = 0.7;
+                            speechSynthesis.speak(utterance);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Detection error:', error);
+                    detectionText.textContent = 'Detection temporarily unavailable';
+                }
+            }, 'image/jpeg', 0.8);
+            
+        } catch (error) {
+            console.error('Capture error:', error);
+        }
+    }
+
+    function captureFrame() {
+        if (!webcam) return;
+        
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = webcamElement.videoWidth;
+        canvas.height = webcamElement.videoHeight;
+        ctx.drawImage(webcamElement, 0, 0);
+        
+        canvas.toBlob((blob) => {
+            const formData = new FormData();
+            formData.append('file', blob, 'capture.jpg');
+            
+            // Submit for full analysis
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/predict';
+            form.enctype = 'multipart/form-data';
+            form.appendChild(formData.get('file'));
+            
+            // Create a temporary file input and submit
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.name = 'file';
+            
+            // Convert blob to file
+            const file = new File([blob], 'capture.jpg', { type: 'image/jpeg' });
+            const dt = new DataTransfer();
+            dt.items.add(file);
+            fileInput.files = dt.files;
+            
+            form.appendChild(fileInput);
+            document.body.appendChild(form);
+            form.submit();
+        }, 'image/jpeg', 0.9);
+    }
+
+    function analyzeCurrentFrame() {
+        if (!webcam) return;
+        
+        // Show loading state
+        analyzeBtn.disabled = true;
+        analyzeBtn.innerHTML = '<span class="btn-icon">⏳</span> Analyzing...';
+        
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = webcamElement.videoWidth;
+        canvas.height = webcamElement.videoHeight;
+        ctx.drawImage(webcamElement, 0, 0);
+        
+        canvas.toBlob((blob) => {
+            // Create a temporary file input and submit for detailed analysis
+            const file = new File([blob], 'live_analysis.jpg', { type: 'image/jpeg' });
+            const dt = new DataTransfer();
+            dt.items.add(file);
+            
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/predict';
+            form.enctype = 'multipart/form-data';
+            
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.name = 'file';
+            fileInput.files = dt.files;
+            
+            form.appendChild(fileInput);
+            document.body.appendChild(form);
+            form.submit();
+        }, 'image/jpeg', 0.9);
+    }
+    
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('themeToggle');
+    if (themeToggle) {
+        // Load saved theme (default is dark)
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-mode');
+            themeToggle.textContent = '🌙';
+        } else {
+            themeToggle.textContent = '☀️';
+        }
+        
+        themeToggle.addEventListener('click', function() {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            this.textContent = isLight ? '🌙' : '☀️';
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        });
+    }
+});
+</script>
+{% endblock %}

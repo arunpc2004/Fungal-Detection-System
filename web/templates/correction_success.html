@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="hero-header">
+    <div class="hero-nav">
+        <div class="hero-brand">
+            <div class="hero-logo">🍏</div>
+            <span>FreshGuard</span>
+        </div>
+        <nav class="hero-menu">
+            <a href="/">Home</a>
+            <a href="/analyze">Analyze</a>
+            <a href="/history">History</a>
+        </nav>
+    </div>
+    <div class="hero-content">
+        <h1>CORRECTION SAVED</h1>
+        <p>Thank you for improving our AI model</p>
+    </div>
+</div>
+
+<section class="results-section">
+    <div class="container" style="text-align: center; padding: 40px;">
+        <div style="background: #4CAF50; color: white; padding: 30px; border-radius: 15px; margin-bottom: 30px;">
+            <h2>✅ Correction Successfully Saved!</h2>
+            <p style="font-size: 18px; margin: 20px 0;">
+                Corrected to: <strong>{{ correct_fruit.title() }} - {{ correct_condition.title() }}</strong>
+            </p>
+            <p>Your feedback helps improve our AI model accuracy for future predictions.</p>
+        </div>
+        
+        <div style="background: var(--card); padding: 25px; border-radius: 15px; margin-bottom: 30px;">
+            <h3>What happens next?</h3>
+            <ul style="text-align: left; max-width: 500px; margin: 0 auto;">
+                <li>Your correction has been saved to our training database</li>
+                <li>This data will be used to retrain and improve our AI model</li>
+                <li>Future predictions will be more accurate thanks to your input</li>
+                <li>You can continue analyzing more images</li>
+            </ul>
+        </div>
+        
+        <div class="result-actions">
+            <a class="btn" href="/" style="background: #4CAF50;">Analyze Another Image</a>
+            <a class="btn" href="/history">View History</a>
+            <a class="btn" href="/dashboard">Dashboard</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

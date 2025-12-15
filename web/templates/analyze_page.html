@@ -1,0 +1,246 @@
+{% extends 'dashboard_base.html' %}
+{% block content %}
+<!-- Dashboard Sidebar -->
+<div class="dashboard-container">
+    <aside class="dashboard-sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">🍏</div>
+            <span class="sidebar-title">FruitGuard</span>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="/dashboard" class="nav-item">
+                <span class="nav-icon">📊</span>
+                <span class="nav-text">Dashboard</span>
+            </a>
+            <a href="/analyze" class="nav-item active">
+                <span class="nav-icon">🔍</span>
+                <span class="nav-text">Analyze</span>
+            </a>
+            <a href="/live-detection" class="nav-item">
+                <span class="nav-icon">📹</span>
+                <span class="nav-text">Live Detection</span>
+            </a>
+            <a href="/history" class="nav-item">
+                <span class="nav-icon">📋</span>
+                <span class="nav-text">History</span>
+            </a>
+            <a href="/batch" class="nav-item">
+                <span class="nav-icon">📦</span>
+                <span class="nav-text">Batch Upload</span>
+            </a>
+            <a href="/about" class="nav-item">
+                <span class="nav-icon">ℹ️</span>
+                <span class="nav-text">About</span>
+            </a>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <div class="user-avatar">👤</div>
+                <div class="user-info">
+                    <div class="user-name">AI User</div>
+                    <div class="user-role">Analyst</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+        <!-- Combined Header Section -->
+        <section class="dashboard-header-hero">
+            <div class="header-nav-section">
+                <div class="header-brand">
+                    <div class="brand-logo">🍏</div>
+                    <span class="brand-name">FreshGuard</span>
+                </div>
+                <nav class="header-nav">
+                    <a href="/dashboard">Home</a>
+                    <a href="/analyze">Analyze</a>
+                    <a href="/live-detection">Live Detection</a>
+                    <a href="/history">History</a>
+                    <a href="/about">About</a>
+                    <span class="theme-toggle" id="themeToggle">🌙</span>
+                </nav>
+            </div>
+            <div class="hero-content">
+                <h1>HEALTHY FRESH</h1>
+                <p>AI-powered fruit & vegetable quality inspection</p>
+            </div>
+        </section>
+        
+        <div class="analyze-page">
+            <div class="analyze-container">
+                <div class="analyze-header">
+                    <span class="analyze-icon">🔍</span>
+                    <h2>Analyze Fruit & Vegetable</h2>
+                </div>
+                <p class="analyze-subtitle">Upload an image to detect fruit type and health condition</p>
+                
+                <form id="analyzeForm" action="/predict" method="post" enctype="multipart/form-data">
+                    <div class="analyze-dropzone" onclick="document.getElementById('fileInput').click()">
+                        <div class="folder-icon">📁</div>
+                        <h3>Drag & Drop or Click to Upload</h3>
+                        <p>Select an image of a fruit or vegetable for analysis</p>
+                        <button type="button" class="browse-files-btn">Browse Files</button>
+                        <p class="selected-file" id="selectedFileName" style="display: none;"></p>
+                        <input type="file" id="fileInput" name="file" accept="image/*" required style="display: none;">
+                    </div>
+                    
+                    <div class="analyze-actions">
+                        <button type="submit" class="analyze-image-btn" id="analyzeBtn" disabled>
+                            <span>🔬</span>
+                            Analyze Image
+                        </button>
+                        <button type="button" class="reset-btn" onclick="resetForm()">
+                            <span>🔄</span>
+                            Reset
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Analysis Capabilities Section -->
+            <div class="capabilities-section">
+                <div class="capabilities-header">
+                    <span class="capabilities-icon">🎯</span>
+                    <h2>Analysis Capabilities</h2>
+                </div>
+                
+                <div class="capabilities-grid">
+                    <div class="capability-card">
+                        <div class="capability-icon">🍎</div>
+                        <h3>Fruit Identification</h3>
+                        <p>Accurately identifies 19+ types of fruits and vegetables including apples, tomatoes, potatoes, grapes, and more.</p>
+                    </div>
+                    <div class="capability-card">
+                        <div class="capability-icon">🔬</div>
+                        <h3>Disease Detection</h3>
+                        <p>Detects various diseases like blight, scab, rot, and other common plant diseases with high precision.</p>
+                    </div>
+                    <div class="capability-card">
+                        <div class="capability-icon">⚡</div>
+                        <h3>Fast Analysis</h3>
+                        <p>Get results in seconds with our optimized AI models running on advanced deep learning algorithms.</p>
+                    </div>
+                    <div class="capability-card">
+                        <div class="capability-icon">📊</div>
+                        <h3>Confidence Scoring</h3>
+                        <p>Each prediction comes with a confidence score to help you understand the reliability of the results.</p>
+                    </div>
+                </div>
+                
+                <div class="info-grid">
+                    <div class="info-card">
+                        <div class="info-header">
+                            <span class="info-icon">📄</span>
+                            <h3>Supported Formats</h3>
+                        </div>
+                        <div class="format-badges">
+                            <span class="format-badge">JPG</span>
+                            <span class="format-badge">PNG</span>
+                            <span class="format-badge">JPEG</span>
+                            <span class="format-badge">WEBP</span>
+                            <span class="format-badge">BMP</span>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-header">
+                            <span class="info-icon">💡</span>
+                            <h3>Tips for Best Results</h3>
+                        </div>
+                        <div class="tips-list">
+                            <div class="tip-item">✓ Use clear, well-lit images</div>
+                            <div class="tip-item">✓ Ensure the fruit/vegetable fills most of the frame</div>
+                            <div class="tip-item">✓ Avoid blurry or heavily shadowed images</div>
+                            <div class="tip-item">✓ Higher resolution images work better</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Loading State -->
+<div class="loading" style="display: none;">
+    <div class="spinner"></div>
+    <p>Analyzing your image... This may take a few seconds</p>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const fileInput = document.getElementById('fileInput');
+    const analyzeBtn = document.getElementById('analyzeBtn');
+    const analyzeForm = document.getElementById('analyzeForm');
+    const loading = document.querySelector('.loading');
+    const dropzone = document.querySelector('.analyze-dropzone');
+    const selectedFileName = document.getElementById('selectedFileName');
+    
+    function updateFileName(file) {
+        if (file) {
+            analyzeBtn.disabled = false;
+            analyzeBtn.style.background = '#007bff';
+            selectedFileName.textContent = `Selected File: ${file.name}`;
+            selectedFileName.style.display = 'block';
+        } else {
+            selectedFileName.style.display = 'none';
+        }
+    }
+    
+    fileInput.addEventListener('change', function() {
+        updateFileName(this.files && this.files[0]);
+    });
+    
+    // Drag and drop support
+    dropzone.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    });
+    
+    dropzone.addEventListener('drop', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            fileInput.files = files;
+            updateFileName(files[0]);
+        }
+    });
+    
+    analyzeForm.addEventListener('submit', function(e) {
+        if (fileInput.files && fileInput.files[0]) {
+            loading.style.display = 'block';
+        }
+    });
+    
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('themeToggle');
+    if (themeToggle) {
+        // Load saved theme (default is dark)
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-mode');
+            themeToggle.textContent = '🌙';
+        } else {
+            themeToggle.textContent = '☀️';
+        }
+        
+        themeToggle.addEventListener('click', function() {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            this.textContent = isLight ? '🌙' : '☀️';
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        });
+    }
+});
+
+function resetForm() {
+    document.getElementById('fileInput').value = '';
+    document.getElementById('analyzeBtn').disabled = true;
+    document.getElementById('analyzeBtn').style.background = '#6c757d';
+    document.getElementById('selectedFileName').style.display = 'none';
+}
+</script>
+{% endblock %}

@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Hero Header -->
+<div class="hero-header">
+	<div class="hero-nav">
+		<div class="hero-brand">
+			<div class="hero-logo">🍏</div>
+			<span>FreshGuard</span>
+		</div>
+		<nav class="hero-menu">
+			<a href="/">Home</a>
+			<a href="/analyze">Analyze</a>
+			<a href="/live-detection">Live Detection</a>
+			<a href="/history">History</a>
+			<a href="/about">About</a>
+			<span class="hero-icon">🌙</span>
+		</nav>
+	</div>
+	<div class="hero-content">
+		<h1>CONFIDENCE METER DEMO</h1>
+		<p>Real-time animated confidence visualization</p>
+	</div>
+</div>
+
+<style>
+.hero-header {
+	background: var(--card) !important;
+	margin: 0 20px 25px 20px !important;
+	width: calc(100% - 40px) !important;
+}
+.demo-section {
+	margin: 0 20px 25px 20px !important;
+	width: calc(100% - 40px) !important;
+	background: var(--card) !important;
+	border-radius: 20px !important;
+	padding: 40px !important;
+	box-shadow: 0 8px 24px rgba(0,0,0,0.08) !important;
+}
+.demo-controls {
+	display: flex;
+	gap: 15px;
+	justify-content: center;
+	margin-bottom: 30px;
+	flex-wrap: wrap;
+}
+.demo-btn {
+	padding: 12px 24px;
+	border: none;
+	border-radius: 12px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	font-size: 14px;
+}
+.demo-btn.high { background: #4CAF50; color: white; }
+.demo-btn.medium { background: #FF9800; color: white; }
+.demo-btn.low { background: #F44336; color: white; }
+.demo-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+</style>
+
+<section class="demo-section">
+	<div class="container">
+		<h2 style="text-align: center; color: var(--ink); margin-bottom: 30px;">🎯 Interactive Confidence Meter</h2>
+		
+		<div class="demo-controls">
+			<button class="demo-btn high" onclick="updateMeter(95)">High Confidence (95%)</button>
+			<button class="demo-btn medium" onclick="updateMeter(75)">Medium Confidence (75%)</button>
+			<button class="demo-btn low" onclick="updateMeter(45)">Low Confidence (45%)</button>
+			<button class="demo-btn" style="background: #6c757d; color: white;" onclick="updateMeter(Math.random() * 100)">Random</button>
+		</div>
+		
+		<div id="demoMeterContainer"></div>
+		
+		<div style="margin-top: 40px; padding: 25px; background: #f8f9fa; border-radius: 15px;">
+			<h3 style="color: var(--ink); margin-bottom: 15px;">✨ Features:</h3>
+			<ul style="color: var(--ink); line-height: 1.8;">
+				<li><strong>Animated Circular Progress:</strong> Smooth SVG animation from 0 to target confidence</li>
+				<li><strong>Color-Coded Levels:</strong> Green (80%+), Orange (50-79%), Red (below 50%)</li>
+				<li><strong>Real-time Number Animation:</strong> Counting effect for confidence percentage</li>
+				<li><strong>Detailed Statistics:</strong> Shows prediction confidence, model accuracy, and processing time</li>
+				<li><strong>Progress Bars:</strong> Additional visual indicators with gradient fills</li>
+				<li><strong>Responsive Design:</strong> Adapts to all screen sizes</li>
+				<li><strong>Smooth Transitions:</strong> 2-second animation duration for professional feel</li>
+			</ul>
+		</div>
+	</div>
+</section>
+
+<script src="{{ url_for('static', filename='confidence-meter.js') }}"></script>
+<script>
+	// Initialize with default value
+	window.predictionData = {
+		confidence: 95,
+		model_accuracy: 99.5,
+		processing_time: '0.2s'
+	};
+	
+	// Create initial meter
+	createConfidenceMeterWithDetails('demoMeterContainer', window.predictionData);
+	
+	// Update meter function
+	function updateMeter(confidence) {
+		window.predictionData.confidence = confidence;
+		window.predictionData.processing_time = (Math.random() * 0.3 + 0.1).toFixed(2) + 's';
+		createConfidenceMeterWithDetails('demoMeterContainer', window.predictionData);
+	}
+	
+	// Theme toggle
+	const themeToggle = document.querySelector('.hero-icon');
+	if (themeToggle) {
+		const savedTheme = localStorage.getItem('theme');
+		if (savedTheme === 'light') {
+			document.body.classList.add('light-mode');
+			themeToggle.textContent = '🌙';
+		} else {
+			themeToggle.textContent = '☀️';
+		}
+		
+		themeToggle.addEventListener('click', function() {
+			document.body.classList.toggle('light-mode');
+			const isLight = document.body.classList.contains('light-mode');
+			this.textContent = isLight ? '🌙' : '☀️';
+			localStorage.setItem('theme', isLight ? 'light' : 'dark');
+		});
+	}
+</script>
+{% endblock %}
